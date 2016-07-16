@@ -208,6 +208,27 @@ class Styles : Stylesheet() {
             padding = box(10.px)
         }
 
+        // Nicer scrollbar
+        scrollBar {
+            padding = box(0.px)
+            prefWidth = 12.px
+            prefHeight = 12.px
+            track {
+                backgroundColor += c("#f3f3f3")
+            }
+            thumb {
+                borderColor += box(c("#bbb"))
+                backgroundColor += c("#f3f3f3")
+            }
+            add(hover, pressed) {
+                thumb {
+                    backgroundColor += c("#757575")
+                    borderColor += box(c("#757575"))
+                    backgroundInsets += box(0.px)
+                }
+            }
+        }
+
         // Icons
         icon {
             minWidth = 16.px
