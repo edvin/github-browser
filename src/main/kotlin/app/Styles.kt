@@ -4,6 +4,9 @@ import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.*
+import javafx.scene.paint.CycleMethod
+import javafx.scene.paint.LinearGradient
+import javafx.scene.paint.Stop
 import javafx.scene.text.FontWeight.BOLD
 import tornadofx.*
 
@@ -33,6 +36,9 @@ class Styles : Stylesheet() {
         val borderLineColor = c("#e5e5e5")
         val darkTextColor = c("#666")
         val listRowBackground = c("#f5f5f5")
+
+        // Buttons
+        val successButton by cssclass()
 
         // Default looks
         val lightBackground by cssclass()
@@ -165,12 +171,11 @@ class Styles : Stylesheet() {
         }
 
         s(listView, tableView) {
-            s(odd, even) {
-                backgroundColor += WHITE
-            }
+//            s(odd, even) {
+//                backgroundColor += WHITE
+//            }
 
-
-            hover {
+            s(hover, selected) {
                 backgroundColor += listRowBackground
             }
         }
@@ -208,7 +213,6 @@ class Styles : Stylesheet() {
             padding = box(10.px)
         }
 
-        // Nicer scrollbar
         scrollBar {
             padding = box(0.px)
             prefWidth = 12.px
@@ -227,6 +231,16 @@ class Styles : Stylesheet() {
                     backgroundInsets += box(0.px)
                 }
             }
+        }
+
+        // Buttons
+        successButton {
+            padding = box(8.px, 15.px)
+            backgroundInsets += box(0.px)
+            borderColor += box(c("#5ca941"))
+            textFill = Color.WHITE
+            fontWeight = BOLD
+            backgroundColor += LinearGradient(0.0, 0.0, 0.0, 1.0, true, CycleMethod.NO_CYCLE, Stop(0.0, c("#8add6d")), Stop(1.0, c("#60b044")))
         }
 
         // Icons
@@ -262,9 +276,20 @@ class Styles : Stylesheet() {
 
     }
 
-
+    // Some rules cannot be expressed in a type safe manner for now, override render to add
+    override fun render() = super.render() + """
+.list-cell:odd {
+    -fx-background: -fx-control-inner-background;
 }
 
-fun main(args: Array<String>) {
-    println(Styles().render())
+.root {
+    -fx-text-background-color: ladder(
+        -fx-background,
+//        -fx-light-text-color 45%,
+        -fx-dark-text-color  46%,
+        -fx-dark-text-color  59%,
+        -fx-mid-text-color   60%
+    )
+}
+"""
 }

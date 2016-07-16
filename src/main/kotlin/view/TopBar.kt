@@ -20,6 +20,7 @@ class TopBar : View() {
                 }
                 label("GitHub Browser")
                 textfield {
+                    prefColumnCount = 20
                     promptText = "Search"
                 }
             }
