@@ -5,7 +5,7 @@ import view.RepoView
 import tornadofx.App
 import tornadofx.importStylesheet
 
-class MyApp: App() {
+class GitHubBrowser : App() {
     override val primaryView = RepoView::class
 
     init {

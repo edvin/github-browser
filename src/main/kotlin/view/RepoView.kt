@@ -1,19 +1,19 @@
 package view
 
-import javafx.scene.control.Label
-import javafx.scene.layout.BorderPane
-import javafx.scene.layout.StackPane
-import javafx.scene.layout.VBox
-import app.Styles
 import app.Styles.Companion.codeIcon
 import app.Styles.Companion.h1
 import app.Styles.Companion.head
+import app.Styles.Companion.icon
 import app.Styles.Companion.issuesIcon
 import app.Styles.Companion.lightBackground
 import app.Styles.Companion.pullRequestsIcon
 import app.Styles.Companion.repoIcon
 import app.Styles.Companion.rowWrapper
 import app.Styles.Companion.settingsIcon
+import javafx.scene.control.Label
+import javafx.scene.layout.BorderPane
+import javafx.scene.layout.StackPane
+import javafx.scene.layout.VBox
 import tornadofx.*
 
 class RepoView : View() {
@@ -40,7 +40,7 @@ class RepoHeading : View() {
     init {
         root.contentBox {
             addClass(h1)
-            label().addClass(repoIcon)
+            label().addClass(icon, repoIcon)
             label("edvin")
             label("/")
             label("tornadofx")
@@ -57,25 +57,25 @@ class RepoTabs : View() {
             contentBox {
                 tabpane {
                     tab("Code") {
-                        graphic = Label().addClass(codeIcon)
+                        graphic = Label().addClass(icon, codeIcon)
                         content {
                             this += CodeView::class
                         }
                     }
                     tab("Issues") {
-                        graphic = Label().addClass(issuesIcon)
+                        graphic = Label().addClass(icon, issuesIcon)
                         content {
 
                         }
                     }
                     tab("Pull requests") {
-                        graphic = Label().addClass(pullRequestsIcon)
+                        graphic = Label().addClass(icon, pullRequestsIcon)
                         content {
 
                         }
                     }
                     tab("Settings") {
-                        graphic = Label().addClass(settingsIcon)
+                        graphic = Label().addClass(icon, settingsIcon)
                         content {
 
                         }
