@@ -7,10 +7,12 @@ import javax.json.JsonObject
 
 class User : JsonModel {
     val login = SimpleStringProperty()
+    val avatarUrl = SimpleStringProperty()
 
     override fun updateModel(json: JsonObject) {
         with(json) {
             login.value = string("login")
+            avatarUrl.value = string("avatar_url")
         }
     }
 

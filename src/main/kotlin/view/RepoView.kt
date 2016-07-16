@@ -65,7 +65,7 @@ class RepoTabs : View() {
                     tab("Issues") {
                         graphic = Label().addClass(icon, issuesIcon)
                         content {
-
+                            this += IssueList::class
                         }
                     }
                     tab("Pull requests") {
