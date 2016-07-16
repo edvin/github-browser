@@ -17,6 +17,7 @@ class Styles : Stylesheet() {
         val head by cssclass()
         val statsbar by cssclass()
         val codeview by cssclass()
+        val issuelist by cssclass()
         val stat by cssclass()
         val h1 by cssclass()
         val h2 by cssclass()
@@ -31,6 +32,7 @@ class Styles : Stylesheet() {
         val contrastColor = c("#d26911")
         val borderLineColor = c("#e5e5e5")
         val darkTextColor = c("#666")
+        val listRowBackground = c("#f5f5f5")
 
         // Default looks
         val lightBackground by cssclass()
@@ -162,6 +164,17 @@ class Styles : Stylesheet() {
             }
         }
 
+        s(listView, tableView) {
+            s(odd, even) {
+                backgroundColor += WHITE
+            }
+
+
+            hover {
+                backgroundColor += listRowBackground
+            }
+        }
+
         tabPane {
             prefWidth = pageWidth
             tabHeaderBackground {
@@ -185,6 +198,14 @@ class Styles : Stylesheet() {
                 focusColor = TRANSPARENT
                 faintFocusColor = TRANSPARENT
             }
+        }
+
+        issuelist contains icon {
+            translateY = 3.px
+        }
+
+        issuelist contains listCell {
+            padding = box(10.px)
         }
 
         // Icons

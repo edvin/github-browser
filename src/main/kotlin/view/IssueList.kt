@@ -1,24 +1,22 @@
 package view
 
-import app.Styles
 import app.Styles.Companion.bold
 import app.Styles.Companion.commentIcon
 import app.Styles.Companion.defaultSpacing
 import app.Styles.Companion.h2
 import app.Styles.Companion.icon
+import app.Styles.Companion.issuelist
 import app.Styles.Companion.openIssueIcon
 import controller.GitHub
-import javafx.geometry.Insets
 import javafx.scene.control.ListView
 import javafx.scene.layout.HBox
-import javafx.scene.layout.Priority
 import javafx.scene.layout.Priority.ALWAYS
 import model.Issue
 import model.Issue.State.open
 import tornadofx.*
 
 class IssueList : View() {
-    override val root = ListView<Issue>()
+    override val root = ListView<Issue>().addClass(issuelist)
     val github: GitHub by inject()
 
     init {
@@ -31,7 +29,6 @@ class IssueList : View() {
                     hbox {
                         label() {
                             addClass(icon, openIssueIcon)
-                            padding = Insets(10.0)
                         }
                     }
                     vbox {

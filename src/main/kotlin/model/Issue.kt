@@ -8,7 +8,7 @@ import tornadofx.jsonModel
 import tornadofx.long
 import tornadofx.string
 import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit.DAYS
+import java.time.temporal.ChronoUnit.*
 import javax.json.JsonObject
 
 class Issue : JsonModel {
@@ -33,6 +33,11 @@ class Issue : JsonModel {
     }
 
     val humanCreatedSince : String get() {
-        return "${created.value.until(ZonedDateTime.now(), DAYS)} days ago"
+        val days = created.value.until(ZonedDateTime.now(), DAYS)
+        if (days > 0) return "$days days ago"
+        val hours = created.value.until(ZonedDateTime.now(), HOURS)
+        if (hours > 0) return "$hours hours ago"
+        val minutes = created.value.until(ZonedDateTime.now(), MINUTES)
+        return if (minutes == 0L) "just now" else "$minutes minutes ago"
     }
 }
