@@ -2,6 +2,7 @@ package app
 
 import javafx.geometry.Pos.CENTER
 import javafx.geometry.Pos.CENTER_LEFT
+import javafx.scene.Cursor.HAND
 import javafx.scene.paint.Color
 import javafx.scene.paint.Color.*
 import javafx.scene.paint.CycleMethod
@@ -21,6 +22,7 @@ class Styles : Stylesheet() {
         val statsbar by cssclass()
         val codeview by cssclass()
         val issuelist by cssclass()
+        val errorMessage by cssclass()
         val loginScreen by cssclass()
         val newToGitHub by cssclass()
         val stat by cssclass()
@@ -53,6 +55,7 @@ class Styles : Stylesheet() {
 
         // Icons
         val icon by cssclass()
+        val small by cssclass()
         val medium by cssclass()
         val large by cssclass()
         val logoIcon by cssclass()
@@ -67,6 +70,7 @@ class Styles : Stylesheet() {
         val contributorsIcon by cssclass()
         val commentIcon by cssclass()
         val openIssueIcon by cssclass()
+        val crossIcon by cssclass()
     }
 
     init {
@@ -149,6 +153,20 @@ class Styles : Stylesheet() {
                 borderColor += box(borderLineColor)
                 padding = box(12.px)
                 alignment = CENTER
+            }
+            errorMessage {
+                borderRadius += box(4.px)
+                maxWidth = 316.px
+                alignment = CENTER
+                label {
+                    textFill = c(153, 17, 17)
+                }
+                icon {
+                    backgroundColor += c(153, 17, 17)
+                }
+                backgroundColor += c(252, 222, 222)
+                borderColor += box(c(210, 178, 178))
+                padding = box(12.px)
             }
             footer {
                 padding = box(50.px, 0.px)
@@ -308,6 +326,24 @@ class Styles : Stylesheet() {
             minHeight = 16.px
             maxHeight = 16.px
             backgroundColor += GRAY
+            add(small) {
+                minWidth = 12.px
+                maxWidth = 12.px
+                minHeight = 12.px
+                maxHeight = 12.px
+            }
+            add(medium) {
+                minWidth = 28.px
+                maxWidth = 28.px
+                minHeight = 28.px
+                maxHeight = 28.px
+            }
+            add(large) {
+                minWidth = 48.px
+                maxWidth = 48.px
+                minHeight = 48.px
+                maxHeight = 48.px
+            }
         }
         repoIcon { shape = "M4 9H3V8h1v1zm0-3H3v1h1V6zm0-2H3v1h1V4zm0-2H3v1h1V2zm8-1v12c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1zm-1 10H1v2h2v-1h3v1h5v-2zm0-10H2v9h9V1z" }
         codeIcon { shape = "M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14 8 9.5 3zm-5 0L0 8l4.5 5L6 11.5 2.5 8 6 4.5 4.5 3z" }
@@ -319,6 +355,10 @@ class Styles : Stylesheet() {
         releasesIcon { shape = "M7.73 1.73C7.26 1.26 6.62 1 5.96 1H3.5C2.13 1 1 2.13 1 3.5v2.47c0 .66.27 1.3.73 1.77l6.06 6.06c.39.39 1.02.39 1.41 0l4.59-4.59a.996.996 0 0 0 0-1.41L7.73 1.73zM2.38 7.09c-.31-.3-.47-.7-.47-1.13V3.5c0-.88.72-1.59 1.59-1.59h2.47c.42 0 .83.16 1.13.47l6.14 6.13-4.73 4.73-6.13-6.15zM3.01 3h2v2H3V3h.01z" }
         contributorsIcon { shape = "M16 12.999c0 .439-.45 1-1 1H7.995c-.539 0-.994-.447-.995-.999H1c-.54 0-1-.561-1-1 0-2.634 3-4 3-4s.229-.409 0-1c-.841-.621-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.442.58 2.5 3c.058 2.41-.159 2.379-1 3-.229.59 0 1 0 1s1.549.711 2.42 2.088C9.196 9.369 10 8.999 10 8.999s.229-.409 0-1c-.841-.62-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.437.581 2.495 3c.059 2.41-.158 2.38-1 3-.229.59 0 1 0 1s3.005 1.366 3.005 4" }
         commentIcon { shape = "M14 1H2c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h2v3.5L7.5 11H14c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zm0 9H7l-2 2v-2H2V2h12v8z" }
+        crossIcon {
+            shape = "M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"
+            cursor = HAND
+        }
         openIssueIcon {
             shape = "M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"
             backgroundColor += c("#6cc644")
@@ -326,18 +366,6 @@ class Styles : Stylesheet() {
         logoIcon {
             backgroundColor += c("#333")
             shape = "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-            add(large) {
-                minWidth = 48.px
-                maxWidth = 48.px
-                minHeight = 48.px
-                maxHeight = 48.px
-            }
-            add(medium) {
-                minWidth = 28.px
-                maxWidth = 28.px
-                minHeight = 28.px
-                maxHeight = 28.px
-            }
         }
     }
 
