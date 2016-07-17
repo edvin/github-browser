@@ -21,10 +21,13 @@ class Styles : Stylesheet() {
         val statsbar by cssclass()
         val codeview by cssclass()
         val issuelist by cssclass()
+        val loginScreen by cssclass()
+        val newToGitHub by cssclass()
         val stat by cssclass()
+        val hContainer by cssclass()
         val h1 by cssclass()
         val h2 by cssclass()
-        val h3 by cssclass()
+        val footer by cssclass()
 
         // Dimensions
         val pageWidth = 980.px
@@ -50,6 +53,8 @@ class Styles : Stylesheet() {
 
         // Icons
         val icon by cssclass()
+        val medium by cssclass()
+        val large by cssclass()
         val logoIcon by cssclass()
         val repoIcon by cssclass()
         val codeIcon by cssclass()
@@ -113,6 +118,47 @@ class Styles : Stylesheet() {
             spacing = 10.px
         }
 
+        loginScreen {
+            fontSize = 14.px
+            alignment = CENTER
+            padding = box(40.px)
+            spacing = 20.px
+            backgroundColor += lightBackgroundColor
+            form {
+                field {
+                    padding = box(8.px, 0.px)
+                }
+                labelContainer {
+                    padding = box(5.px, 0.px)
+                }
+                textField {
+                    minHeight = 33.px
+                }
+                padding = box(15.px)
+                maxWidth = 316.px
+                backgroundColor += WHITE
+                borderRadius += box(4.px)
+                borderColor += box(borderLineColor)
+                successButton {
+                    prefWidth = infinity
+                }
+            }
+            newToGitHub {
+                borderRadius += box(4.px)
+                maxWidth = 316.px
+                borderColor += box(borderLineColor)
+                padding = box(12.px)
+                alignment = CENTER
+            }
+            footer {
+                padding = box(50.px, 0.px)
+                alignment = CENTER
+                label {
+                    textFill = darkTextColor
+                }
+            }
+        }
+
         statsbar {
             borderColor += box(TRANSPARENT, TRANSPARENT, contrastColor, TRANSPARENT)
             borderWidth += box(0.px, 0.px, 8.px, 0.px)
@@ -143,21 +189,24 @@ class Styles : Stylesheet() {
             }
         }
 
-        h1 {
+        hContainer {
             spacing = 6.px
             padding = box(0.px, 0.px)
-            label {
-                textFill = linkColor
-            }
+            alignment = CENTER_LEFT
+        }
+
+        h1 {
+            fontSize = 22.px
         }
 
         h2 {
-            spacing = 6.px
-            alignment = CENTER_LEFT
+            fontSize = 18.px
+            textFill = darkTextColor
+        }
+
+        h2 {
             fontSize = 16.px
-            label {
-                textFill = darkTextColor
-            }
+            textFill = darkTextColor
         }
 
         head {
@@ -245,6 +294,12 @@ class Styles : Stylesheet() {
             textFill = Color.WHITE
             fontWeight = BOLD
             backgroundColor += LinearGradient(0.0, 0.0, 0.0, 1.0, true, CycleMethod.NO_CYCLE, Stop(0.0, c("#8add6d")), Stop(1.0, c("#60b044")))
+            and(hover) {
+                backgroundColor += LinearGradient(0.0, 0.0, 0.0, 1.0, true, CycleMethod.NO_CYCLE, Stop(0.0, c("#79d858")), Stop(1.0, c("#569e3d")))
+            }
+            and(pressed) {
+                backgroundColor += c("#569e3d")
+            }
         }
 
         // Icons
@@ -270,14 +325,21 @@ class Styles : Stylesheet() {
             backgroundColor += c("#6cc644")
         }
         logoIcon {
-            minWidth = 28.px
-            maxWidth = 28.px
-            minHeight = 28.px
-            maxHeight = 28.px
-            backgroundColor += BLACK
+            backgroundColor += c("#333")
             shape = "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+            add(large) {
+                minWidth = 48.px
+                maxWidth = 48.px
+                minHeight = 48.px
+                maxHeight = 48.px
+            }
+            add(medium) {
+                minWidth = 28.px
+                maxWidth = 28.px
+                minHeight = 28.px
+                maxHeight = 28.px
+            }
         }
-
     }
 
     // Some rules cannot be expressed in a type safe manner for now, override render to add
@@ -304,4 +366,8 @@ class Styles : Stylesheet() {
   -fx-padding: 1;
 }
 """
+}
+
+fun main(args: Array<String>) {
+    println(Styles().render())
 }

@@ -1,7 +1,9 @@
 package view
 
+import app.Styles
 import javafx.scene.layout.HBox
 import app.Styles.Companion.logoIcon
+import app.Styles.Companion.medium
 import app.Styles.Companion.topbar
 import tornadofx.View
 import tornadofx.addClass
@@ -16,7 +18,7 @@ class TopBar : View() {
             addClass(topbar)
             contentBox {
                 label {
-                    addClass(logoIcon)
+                    addClass(logoIcon, medium)
                 }
                 label("GitHub Browser")
                 textfield {

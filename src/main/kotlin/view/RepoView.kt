@@ -3,6 +3,7 @@ package view
 import app.IssueEvent
 import app.Styles.Companion.codeIcon
 import app.Styles.Companion.h1
+import app.Styles.Companion.hContainer
 import app.Styles.Companion.head
 import app.Styles.Companion.icon
 import app.Styles.Companion.issuesIcon
@@ -40,11 +41,11 @@ class RepoHeading : View() {
 
     init {
         root.contentBox {
-            addClass(h1)
+            addClass(hContainer)
             label().addClass(icon, repoIcon)
-            label("edvin")
-            label("/")
-            label("tornadofx")
+            label("edvin").addClass(h1)
+            label("/").addClass(h1)
+            label("tornadofx").addClass(h1)
         }
     }
 }
