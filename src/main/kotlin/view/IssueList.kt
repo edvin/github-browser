@@ -60,7 +60,7 @@ class IssueList : View() {
                 }
 
                 primaryStage.addEventFilter(IssueEvent.ISSUE_TAB_ACTIVATED) {
-                    runAsynWithProgress {
+                    runAsyncWithProgress {
                         github.listIssues(state = open)
                     } ui {
                         items = it
