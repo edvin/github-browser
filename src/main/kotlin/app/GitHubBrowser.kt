@@ -7,7 +7,6 @@ import tornadofx.importStylesheet
 import view.LoginScreen
 
 class GitHubBrowser : App() {
-//    override val primaryView = RepoView::class
     override val primaryView = LoginScreen::class
 
     init {

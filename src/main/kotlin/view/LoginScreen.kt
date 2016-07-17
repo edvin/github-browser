@@ -7,6 +7,7 @@ import app.Styles.Companion.loginScreen
 import app.Styles.Companion.logoIcon
 import app.Styles.Companion.newToGitHub
 import app.Styles.Companion.successButton
+import controller.GitHub
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.control.Hyperlink
 import javafx.scene.layout.VBox
@@ -16,6 +17,7 @@ import tornadofx.FX.Companion.application
 
 class LoginScreen : View() {
     override val root = VBox().addClass(loginScreen)
+    val github : GitHub by inject()
     val model = UserModel()
 
     init {
@@ -39,7 +41,7 @@ class LoginScreen : View() {
                 button("Sign in") {
                     addClass(successButton)
                     setOnAction {
-
+                        login()
                     }
                 }
             }
@@ -56,6 +58,12 @@ class LoginScreen : View() {
                 addClass(footer)
                 label("TornadoFX Showcase Application")
             }
+        }
+    }
+
+    private fun login() {
+        runAsync {
+            println(github.login(model.login.value, model.password.value))
         }
     }
 

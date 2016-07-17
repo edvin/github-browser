@@ -1,10 +1,9 @@
 package view
 
-import app.Styles
-import javafx.scene.layout.HBox
 import app.Styles.Companion.logoIcon
 import app.Styles.Companion.medium
 import app.Styles.Companion.topbar
+import javafx.scene.layout.HBox
 import tornadofx.View
 import tornadofx.addClass
 import tornadofx.label

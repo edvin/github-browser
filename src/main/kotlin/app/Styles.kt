@@ -227,10 +227,9 @@ class Styles : Stylesheet() {
             faintFocusColor = TRANSPARENT
         }
 
-
-//        listCell and odd {
-//            unsafe("-fx-background", raw("-fx-control-inner-background"))
-//        }
+        listCell and odd {
+            unsafe("-fx-background", raw("-fx-control-inner-background"))
+        }
 
         tabPane {
             prefWidth = pageWidth
@@ -345,18 +344,20 @@ class Styles : Stylesheet() {
     // Some rules cannot be expressed in a type safe manner for now, override render to add
     override fun render() = super.render() + """
 /* Remove different background for odd rows */
-.list-cell:odd {
-    -fx-background: -fx-control-inner-background;
-}
+//.list-cell:odd {
+//    -fx-background: -fx-control-inner-background;
+//}
 
-/* Remove one light step to make sure we don't get white text on light color backgrounds */
 .root {
+    /* Remove one light step to make sure we don't get white text on light color backgrounds */
     -fx-text-background-color: ladder(
         -fx-background,
         -fx-dark-text-color  46%,
         -fx-dark-text-color  59%,
         -fx-mid-text-color   60%
     );
+    /* Remove the focus faint color */
+    -fx-faint-focus-color: transparent;
 }
 
 /* Same border on focus */
@@ -364,6 +365,13 @@ class Styles : Stylesheet() {
   -fx-background-color: -fx-box-border, -fx-control-inner-background;
   -fx-background-insets: 0, 1;
   -fx-padding: 1;
+}
+
+/* Visited hyperlinks look like non-visited hyperlinks */
+.hyperlink:armed,
+.hyperlink:visited,
+.hyperlink:hover:armed {
+    -fx-text-fill: -fx-accent;
 }
 """
 }
