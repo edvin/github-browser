@@ -60,9 +60,12 @@ class IssueList : View() {
                 }
 
                 primaryStage.addEventFilter(IssueEvent.ISSUE_TAB_ACTIVATED) {
-                    asyncItems { github.listIssues(state = open) }
+                    runAsynWithProgress {
+                        github.listIssues(state = open)
+                    } ui {
+                        items = it
+                    }
                 }
-
             }
         }
     }

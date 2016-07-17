@@ -174,6 +174,8 @@ class Styles : Stylesheet() {
             s(hover, selected) {
                 backgroundColor += listRowBackground
             }
+            focusColor = TRANSPARENT
+            faintFocusColor = TRANSPARENT
         }
 
 
@@ -280,17 +282,26 @@ class Styles : Stylesheet() {
 
     // Some rules cannot be expressed in a type safe manner for now, override render to add
     override fun render() = super.render() + """
+/* Remove different background for odd rows */
 .list-cell:odd {
     -fx-background: -fx-control-inner-background;
 }
 
+/* Remove one light step to make sure we don't get white text on light color backgrounds */
 .root {
     -fx-text-background-color: ladder(
         -fx-background,
         -fx-dark-text-color  46%,
         -fx-dark-text-color  59%,
         -fx-mid-text-color   60%
-    )
+    );
+}
+
+/* Same border on focus */
+.list-view:focused, .table-view:focused {
+  -fx-background-color: -fx-box-border, -fx-control-inner-background;
+  -fx-background-insets: 0, 1;
+  -fx-padding: 1;
 }
 """
 }
