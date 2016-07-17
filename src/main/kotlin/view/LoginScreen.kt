@@ -1,6 +1,5 @@
 package view
 
-import app.Styles
 import app.Styles.Companion.crossIcon
 import app.Styles.Companion.errorMessage
 import app.Styles.Companion.footer
@@ -31,7 +30,7 @@ class LoginScreen : View() {
 
         with(root) {
             label() {
-                addClass(logoIcon, large)
+                addClass(logoIcon, icon, large)
             }
             label("Sign in to GitHub").addClass(h1)
             stackpane {

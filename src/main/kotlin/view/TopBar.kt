@@ -1,5 +1,6 @@
 package view
 
+import app.Styles.Companion.icon
 import app.Styles.Companion.logoIcon
 import app.Styles.Companion.medium
 import app.Styles.Companion.topbar
@@ -17,7 +18,7 @@ class TopBar : View() {
             addClass(topbar)
             contentBox {
                 label {
-                    addClass(logoIcon, medium)
+                    addClass(logoIcon, icon, medium)
                 }
                 label("GitHub Browser")
                 textfield {
