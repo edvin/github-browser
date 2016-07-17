@@ -1,5 +1,6 @@
 package view
 
+import app.IssueEvent
 import app.Styles
 import app.Styles.Companion.bold
 import app.Styles.Companion.commentIcon
@@ -58,7 +59,10 @@ class IssueList : View() {
                     }
                 }
 
-                asyncItems { github.listIssues(state = open) }
+                primaryStage.addEventFilter(IssueEvent.ISSUE_TAB_ACTIVATED) {
+                    asyncItems { github.listIssues(state = open) }
+                }
+
             }
         }
     }

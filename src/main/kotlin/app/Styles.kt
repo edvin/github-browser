@@ -171,14 +171,15 @@ class Styles : Stylesheet() {
         }
 
         s(listView, tableView) {
-//            s(odd, even) {
-//                backgroundColor += WHITE
-//            }
-
             s(hover, selected) {
                 backgroundColor += listRowBackground
             }
         }
+
+
+//        listCell and odd {
+//            unsafe("-fx-background", raw("-fx-control-inner-background"))
+//        }
 
         tabPane {
             prefWidth = pageWidth
@@ -235,6 +236,7 @@ class Styles : Stylesheet() {
 
         // Buttons
         successButton {
+            borderRadius += box(4.px)
             padding = box(8.px, 15.px)
             backgroundInsets += box(0.px)
             borderColor += box(c("#5ca941"))
@@ -285,7 +287,6 @@ class Styles : Stylesheet() {
 .root {
     -fx-text-background-color: ladder(
         -fx-background,
-//        -fx-light-text-color 45%,
         -fx-dark-text-color  46%,
         -fx-dark-text-color  59%,
         -fx-mid-text-color   60%

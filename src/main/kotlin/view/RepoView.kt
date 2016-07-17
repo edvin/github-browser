@@ -1,5 +1,6 @@
 package view
 
+import app.IssueEvent
 import app.Styles.Companion.codeIcon
 import app.Styles.Companion.h1
 import app.Styles.Companion.head
@@ -64,6 +65,10 @@ class RepoTabs : View() {
                     }
                     tab("Issues") {
                         graphic = Label().addClass(icon, issuesIcon)
+                        selectedProperty().onChange { tabActivated ->
+                            if (tabActivated == true)
+                                primaryStage.fireEvent(IssueEvent(IssueEvent.ISSUE_TAB_ACTIVATED))
+                        }
                         content {
                             this += IssueList::class
                         }
