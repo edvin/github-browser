@@ -15,6 +15,7 @@ import controller.GitHub
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.control.Button
 import javafx.scene.control.Hyperlink
+import javafx.scene.control.PasswordField
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import model.UserModel
@@ -23,8 +24,11 @@ import tornadofx.FX.Companion.application
 
 class LoginScreen : View() {
     override val root = VBox().addClass(loginScreen)
-    val github : GitHub by inject()
+    val github: GitHub by inject()
     val model = UserModel()
+
+    val messageWrapper by cssid()
+    val passwordField by cssid()
 
     init {
         title = "GitHub Browser Login"
@@ -34,9 +38,7 @@ class LoginScreen : View() {
                 addClass(logoIcon, icon, large)
             }
             label("Sign in to GitHub").addClass(h1)
-            stackpane {
-                id = "message-wrapper"
-            }
+            stackpane().setId(messageWrapper)
             form {
                 fieldset(labelPosition = VERTICAL) {
                     field("Username or email address") {
@@ -46,12 +48,14 @@ class LoginScreen : View() {
                     }
                     field("Password") {
                         passwordfield(model.password) {
+                            setId(passwordField)
                             required(message = "Enter your password")
                         }
                     }.addForgotPasswordLink()
                 }
 
                 button("Sign in") {
+                    isDefaultButton = true
                     addClass(successButton)
                     setOnAction {
                         login()
@@ -75,7 +79,6 @@ class LoginScreen : View() {
     }
 
     private fun Button.login() {
-
         if (model.commit()) {
             // Temporarily change the text and opacity of the login button
             val originalText = text
@@ -89,7 +92,7 @@ class LoginScreen : View() {
                 opacity = 1.0
 
                 if (success) {
-                    replaceWith(RepoView::class)
+                    replaceWith(UserScreen::class, ViewTransition.SlideIn)
                 } else {
                     loginFailed()
                 }
@@ -97,20 +100,26 @@ class LoginScreen : View() {
         }
     }
 
+    /**
+     * Locate the messageWrapper by it's CSS id and replace it's content
+     * with a "login failed" error message.
+     */
     private fun loginFailed() {
-        val st = root.lookup("#message-wrapper") as StackPane
-        st.children.clear()
-        st.hbox {
-            addClass(errorMessage)
-            label("Incorrect username or password.")
-            spacer()
-            button() {
-                addClass(crossIcon, icon, small)
-                setOnAction {
-                    this@hbox.removeFromParent()
+        root.select<StackPane>(messageWrapper).replaceChildren {
+            hbox {
+                addClass(errorMessage)
+                label("Incorrect username or password.")
+                spacer()
+                button() {
+                    addClass(crossIcon, icon, small)
+                    setOnAction {
+                        this@hbox.removeFromParent()
+                    }
                 }
             }
         }
+
+        root.select<PasswordField>(passwordField).requestFocus()
     }
 
     fun Field.addForgotPasswordLink() {

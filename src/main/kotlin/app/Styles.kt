@@ -71,6 +71,7 @@ class Styles : Stylesheet() {
         val commentIcon by cssclass()
         val openIssueIcon by cssclass()
         val crossIcon by cssclass()
+        val starIcon by cssclass()
     }
 
     init {
@@ -123,12 +124,18 @@ class Styles : Stylesheet() {
         }
 
         loginScreen {
+            val common = mixin {
+                borderRadius += box(4.px)
+                maxWidth = 316.px
+                alignment = CENTER
+            }
             fontSize = 14.px
             alignment = CENTER
             padding = box(40.px)
             spacing = 20.px
             backgroundColor += lightBackgroundColor
             form {
+                +common
                 field {
                     padding = box(8.px, 0.px)
                 }
@@ -139,25 +146,19 @@ class Styles : Stylesheet() {
                     minHeight = 33.px
                 }
                 padding = box(15.px)
-                maxWidth = 316.px
                 backgroundColor += WHITE
-                borderRadius += box(4.px)
                 borderColor += box(borderLineColor)
                 successButton {
                     prefWidth = infinity
                 }
             }
             newToGitHub {
-                borderRadius += box(4.px)
-                maxWidth = 316.px
+                +common
                 borderColor += box(borderLineColor)
                 padding = box(12.px)
-                alignment = CENTER
             }
             errorMessage {
-                borderRadius += box(4.px)
-                maxWidth = 316.px
-                alignment = CENTER
+                +common
                 label {
                     textFill = c(153, 17, 17)
                 }
@@ -355,6 +356,7 @@ class Styles : Stylesheet() {
         releasesIcon { shape = "M7.73 1.73C7.26 1.26 6.62 1 5.96 1H3.5C2.13 1 1 2.13 1 3.5v2.47c0 .66.27 1.3.73 1.77l6.06 6.06c.39.39 1.02.39 1.41 0l4.59-4.59a.996.996 0 0 0 0-1.41L7.73 1.73zM2.38 7.09c-.31-.3-.47-.7-.47-1.13V3.5c0-.88.72-1.59 1.59-1.59h2.47c.42 0 .83.16 1.13.47l6.14 6.13-4.73 4.73-6.13-6.15zM3.01 3h2v2H3V3h.01z" }
         contributorsIcon { shape = "M16 12.999c0 .439-.45 1-1 1H7.995c-.539 0-.994-.447-.995-.999H1c-.54 0-1-.561-1-1 0-2.634 3-4 3-4s.229-.409 0-1c-.841-.621-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.442.58 2.5 3c.058 2.41-.159 2.379-1 3-.229.59 0 1 0 1s1.549.711 2.42 2.088C9.196 9.369 10 8.999 10 8.999s.229-.409 0-1c-.841-.62-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.437.581 2.495 3c.059 2.41-.158 2.38-1 3-.229.59 0 1 0 1s3.005 1.366 3.005 4" }
         commentIcon { shape = "M14 1H2c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h2v3.5L7.5 11H14c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zm0 9H7l-2 2v-2H2V2h12v8z" }
+        starIcon { shape = "M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74z" }
         crossIcon {
             shape = "M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"
             cursor = HAND

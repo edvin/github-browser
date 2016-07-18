@@ -1,20 +1,31 @@
 package model
 
+import javafx.beans.property.SimpleLongProperty
+import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
-import tornadofx.JsonModel
-import tornadofx.ViewModel
-import tornadofx.string
+import tornadofx.*
+import java.time.ZonedDateTime
 import javax.json.JsonObject
 
 class User : JsonModel {
     val login = SimpleStringProperty()
     val password = SimpleStringProperty()
     val avatarUrl = SimpleStringProperty()
+    val location = SimpleStringProperty()
+    val email = SimpleStringProperty()
+    val followers = SimpleLongProperty()
+    val following = SimpleLongProperty()
+    val created = SimpleObjectProperty<ZonedDateTime>()
 
     override fun updateModel(json: JsonObject) {
         with(json) {
             login.value = string("login")
             avatarUrl.value = string("avatar_url")
+            location.value = string("location")
+            email.value = string("email")
+            followers.value = long("followers")
+            following.value = long("following")
+            created.value = ZonedDateTime.parse(getString("created_at"))
         }
     }
 
@@ -22,8 +33,19 @@ class User : JsonModel {
 }
 
 class UserModel : ViewModel() {
-    var user: User = User()
+    val userProperty = SimpleObjectProperty(User())
+    var user by userProperty
+
+    init {
+        rebindOnChange(userProperty)
+    }
 
     val login = bind { user.login }
     val password = bind { user.password }
+    val avatarUrl = bind { user.avatarUrl }
+    val location = bind { user.location }
+    val email = bind { user.email }
+    val followers = bind { user.followers }
+    val following = bind { user.following }
+    val created = bind { user.created }
 }

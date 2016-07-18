@@ -10,6 +10,7 @@ import app.Styles.Companion.h2
 import app.Styles.Companion.icon
 import app.Styles.Companion.issuelist
 import app.Styles.Companion.openIssueIcon
+import app.Styles.Companion.successButton
 import app.Styles.Companion.whiteBackground
 import controller.GitHub
 import javafx.geometry.Pos
@@ -33,7 +34,7 @@ class IssueList : View() {
                 alignment = Pos.CENTER_RIGHT
                 addClass(defaultContentPadding)
                 button("New issue") {
-                    addClass(Styles.successButton)
+                    addClass(successButton)
                 }
             }
             listview<Issue> {

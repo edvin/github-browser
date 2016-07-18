@@ -18,20 +18,23 @@ import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import tornadofx.*
 
-class RepoView : View() {
+class RepoScreen : View() {
     override val root = BorderPane()
 
     init {
         title = "TornadoFX GitHub Browser"
-        root.top {
-            addClass(rowWrapper)
-            this += TopBar::class
-            this += RepoHeading::class
-        }
 
-        root.center {
-            addClass(rowWrapper)
-            this += RepoTabs::class
+        with (root) {
+            top {
+                addClass(rowWrapper)
+                this += TopBar::class
+                this += RepoHeading::class
+            }
+
+            center {
+                addClass(rowWrapper)
+                this += RepoTabs::class
+            }
         }
     }
 }
