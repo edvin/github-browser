@@ -13,6 +13,7 @@ import app.Styles.Companion.small
 import app.Styles.Companion.successButton
 import controller.GitHub
 import javafx.geometry.Orientation.VERTICAL
+import javafx.scene.control.Button
 import javafx.scene.control.Hyperlink
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
@@ -73,28 +74,40 @@ class LoginScreen : View() {
         }
     }
 
-    private fun login() {
+    private fun Button.login() {
+
         if (model.commit()) {
+            // Temporarily change the text and opacity of the login button
+            val originalText = text
+            text = "Signing in..."
+            opacity = 0.5
             runAsync {
                 github.login(model.login.value, model.password.value)
             } ui { success ->
+                // Reset the text and opacity
+                text = originalText
+                opacity = 1.0
+
                 if (success) {
-
+                    replaceWith(RepoView::class)
                 } else {
-                    val st = root.lookup("#message-wrapper") as StackPane
-                    st.children.clear()
-                    st.hbox {
-                        addClass(errorMessage)
-                        label("Incorrect username or password.")
-                        spacer()
-                        button() {
-                            addClass(crossIcon, icon, small)
-                            setOnAction {
-                                this@hbox.removeFromParent()
-                            }
-                        }
-                    }
+                    loginFailed()
+                }
+            }
+        }
+    }
 
+    private fun loginFailed() {
+        val st = root.lookup("#message-wrapper") as StackPane
+        st.children.clear()
+        st.hbox {
+            addClass(errorMessage)
+            label("Incorrect username or password.")
+            spacer()
+            button() {
+                addClass(crossIcon, icon, small)
+                setOnAction {
+                    this@hbox.removeFromParent()
                 }
             }
         }
