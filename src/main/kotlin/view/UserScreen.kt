@@ -1,6 +1,9 @@
 package view
 
+import app.Styles
+import app.Styles.Companion.bold
 import app.Styles.Companion.borderLineColor
+import app.Styles.Companion.branchIcon
 import app.Styles.Companion.clockIcon
 import app.Styles.Companion.darkTextColor
 import app.Styles.Companion.defaultContentPadding
@@ -9,19 +12,24 @@ import app.Styles.Companion.detail
 import app.Styles.Companion.h1
 import app.Styles.Companion.h2
 import app.Styles.Companion.icon
+import app.Styles.Companion.linkColor
 import app.Styles.Companion.linkIcon
 import app.Styles.Companion.locationIcon
 import app.Styles.Companion.repoIcon
 import app.Styles.Companion.rowWrapper
+import app.Styles.Companion.starIcon
 import app.Styles.Companion.stat
 import app.Styles.Companion.successButton
 import app.Styles.Companion.userinfo
 import app.Styles.Companion.userscreen
-import controller.ViewState
+import controller.GitHub
 import javafx.geometry.Insets
 import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
+import javafx.scene.layout.HBox
+import javafx.scene.layout.Priority
+import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.paint.Color.TRANSPARENT
@@ -31,7 +39,6 @@ import java.time.format.DateTimeFormatter
 
 class UserScreen : View() {
     override val root = BorderPane().addClass(userscreen)
-    val model = get(ViewState::selectedUser)
 
     init {
         title = "GitHub Browser User Screen"
@@ -54,7 +61,7 @@ class UserScreen : View() {
 
 class UserDetail : View() {
     override val root = VBox().addClass(detail, defaultSpacing, defaultContentPadding)
-    val model = get(ViewState::selectedUser)
+    val github : GitHub by inject()
 
     init {
         with(root) {
@@ -72,7 +79,33 @@ class UserDetail : View() {
                 }
             }
             listview<Repo> {
-
+                vboxConstraints { vGrow = ALWAYS }
+                cellFormat {
+                    graphic = HBox().apply {
+                        addClass(defaultSpacing)
+                        vbox {
+                            addClass(defaultSpacing)
+                            hboxConstraints { hGrow = ALWAYS }
+                            text(it.name).addClass(h2, bold).fill = linkColor
+                            label(it.description)
+                            label("Updated #${it.updated.value.humanSince}")
+                        }
+                        hbox {
+                            addClass(defaultSpacing)
+                            label().addClass(starIcon, icon)
+                            label(it.stargazersCount.value.toString())
+                            label().addClass(branchIcon, icon)
+                            label(it.forksCount.value.toString())
+                        }
+                    }
+                }
+                onUserSelect {
+//                    github.selectedRepo = it
+                    replaceWith(RepoScreen::class, ViewTransition.SlideIn)
+                }
+                whenDocked {
+                    asyncItems { github.listRepos() }
+                }
             }
         }
     }
@@ -80,7 +113,7 @@ class UserDetail : View() {
 
 class UserInfo : View() {
     override val root = VBox().addClass(userinfo)
-    val model = get(ViewState::selectedUser)
+    val model = get(GitHub::selectedUser)
 
     init {
         with(root) {

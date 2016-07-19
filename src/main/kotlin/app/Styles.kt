@@ -195,7 +195,7 @@ class Styles : Stylesheet() {
             userinfo {
                 backgroundColor += WHITE
                 padding = box(20.px, 10.px)
-                minWidth = Dimension(pageWidth.value - 735, Dimension.LinearUnits.px)
+                minWidth = pageWidth / 4
                 maxWidth = minWidth
                 stat {
                     alignment = CENTER
@@ -215,7 +215,7 @@ class Styles : Stylesheet() {
             }
             detail {
                 backgroundColor += WHITE
-                minWidth = Dimension(pageWidth.value - 245, Dimension.LinearUnits.px)
+                minWidth = pageWidth * 0.75
                 maxWidth = minWidth
             }
         }

@@ -49,7 +49,7 @@ class IssueList : View() {
                             addClass(defaultSpacing)
                             hboxConstraints { hGrow = ALWAYS }
                             label(it.title).addClass(h2, bold)
-                            label("#${it.number.value} opened ${it.humanCreatedSince} by ${it.user.value}")
+                            label("#${it.number.value} opened ${it.created.value.humanSince} by ${it.user.value}")
                         }
                         hbox {
                             addClass(defaultSpacing)
