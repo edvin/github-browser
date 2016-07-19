@@ -12,6 +12,7 @@ import app.Styles.Companion.pullRequestsIcon
 import app.Styles.Companion.repoIcon
 import app.Styles.Companion.rowWrapper
 import app.Styles.Companion.settingsIcon
+import controller.GitHub
 import javafx.scene.control.Label
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.StackPane
@@ -41,6 +42,7 @@ class RepoScreen : View() {
 
 class RepoHeading : View() {
     override val root = VBox().addClass(head)
+    val github: GitHub by inject()
 
     init {
         root.contentBox {
