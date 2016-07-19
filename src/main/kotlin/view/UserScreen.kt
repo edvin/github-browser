@@ -1,6 +1,5 @@
 package view
 
-import app.Styles
 import app.Styles.Companion.bold
 import app.Styles.Companion.borderLineColor
 import app.Styles.Companion.branchIcon
@@ -12,7 +11,6 @@ import app.Styles.Companion.detail
 import app.Styles.Companion.h1
 import app.Styles.Companion.h2
 import app.Styles.Companion.icon
-import app.Styles.Companion.linkColor
 import app.Styles.Companion.linkIcon
 import app.Styles.Companion.locationIcon
 import app.Styles.Companion.repoIcon
@@ -28,7 +26,6 @@ import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
-import javafx.scene.layout.Priority
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
@@ -50,10 +47,8 @@ class UserScreen : View() {
 
             center = hbox {
                 addClass(rowWrapper)
-                hbox {
-                    this += UserInfo::class
-                    this += UserDetail::class
-                }
+                this += UserInfo::class
+                this += UserDetail::class
             }
         }
     }
@@ -61,7 +56,7 @@ class UserScreen : View() {
 
 class UserDetail : View() {
     override val root = VBox().addClass(detail, defaultSpacing, defaultContentPadding)
-    val github : GitHub by inject()
+    val github: GitHub by inject()
 
     init {
         with(root) {
@@ -86,7 +81,10 @@ class UserDetail : View() {
                         vbox {
                             addClass(defaultSpacing)
                             hboxConstraints { hGrow = ALWAYS }
-                            text(it.name).addClass(h2, bold).fill = linkColor
+                            hyperlink(it.name) {
+                                setOnAction { editRepo(item) }
+                                addClass(h2, bold)
+                            }
                             label(it.description)
                             label("Updated ${it.updated.value.humanSince}")
                         }
@@ -100,8 +98,7 @@ class UserDetail : View() {
                     }
                 }
                 onUserSelect {
-//                    github.selectedRepo = it
-                    replaceWith(RepoScreen::class, ViewTransition.SlideIn)
+                    editRepo(it)
                 }
                 whenDocked {
                     asyncItems { github.listRepos() }
@@ -109,21 +106,26 @@ class UserDetail : View() {
             }
         }
     }
+
+    private fun editRepo(repo: Repo) {
+        github.selectedRepo = repo
+        replaceWith(RepoScreen::class, ViewTransition.SlideIn)
+    }
 }
 
 class UserInfo : View() {
     override val root = VBox().addClass(userinfo)
-    val model = get(GitHub::selectedUser)
+    val user = get(GitHub::selectedUser)
 
     init {
         with(root) {
             addClass(defaultSpacing)
             imageview {
-                imageProperty().bind(model.avatarUrl.objectBinding { Image(model.avatarUrl.value, true) })
+                imageProperty().bind(user.avatarUrlProperty.objectBinding { Image(user.avatarUrl, true) })
             }
             vbox {
-                label(model.name).addClass(h1)
-                label(model.login).addClass(h2)
+                label(user.nameProperty).addClass(h1)
+                label(user.loginProperty).addClass(h2)
             }
             hyperlink("Add a bio") {
                 padding = Insets(0.0)
@@ -137,12 +139,12 @@ class UserInfo : View() {
                 padding = Insets(10.0, 0.0, 10.0, 0.0)
                 spacing = 6.0
 
-                label(model.location) {
+                label(user.locationProperty) {
                     textFill = BLACK
                     graphicTextGap = 10.0
                     graphic = label().addClass(locationIcon, icon)
                 }
-                label(model.blog) {
+                label(user.blogProperty) {
                     textFill = BLACK
                     graphicTextGap = 10.0
                     graphic = label().addClass(linkIcon, icon)
@@ -151,19 +153,19 @@ class UserInfo : View() {
                     textFill = BLACK
                     graphicTextGap = 10.0
                     graphic = label().addClass(clockIcon, icon)
-                    textProperty().bind(model.created.stringBinding { "Joined on ${this!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" })
+                    textProperty().bind(user.createdProperty.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" })
                 }
             }
             hbox {
                 addClass(stat)
                 vbox {
-                    label().textProperty().bind(model.followers.stringBinding { toString() })
+                    label().textProperty().bind(user.followersProperty.stringBinding { it.toString() })
                     text("Followers") {
                         fill = darkTextColor
                     }
                 }
                 vbox {
-                    label().textProperty().bind(model.following.stringBinding { toString() })
+                    label().textProperty().bind(user.followingProperty.stringBinding { it.toString() })
                     text("Following") {
                         fill = darkTextColor
                     }

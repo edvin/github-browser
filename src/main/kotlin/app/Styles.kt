@@ -423,5 +423,9 @@ class Styles : Stylesheet() {
             unsafe("-fx-text-fill", raw("-fx-accent"))
         }
 
+        hyperlink {
+            textFill = linkColor
+        }
+
     }
 }

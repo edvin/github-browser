@@ -25,7 +25,7 @@ class RepoScreen : View() {
     init {
         title = "TornadoFX GitHub Browser"
 
-        with (root) {
+        with(root) {
             top {
                 addClass(rowWrapper)
                 this += TopBar::class
@@ -48,9 +48,20 @@ class RepoHeading : View() {
         root.contentBox {
             addClass(hContainer)
             label().addClass(icon, repoIcon)
-            label("edvin").addClass(h1)
+            hyperlink() {
+                textProperty().bind(github.selectedRepoProperty.stringBinding { it!!.owner.name })
+                addClass(h1)
+                setOnAction {
+                    // TODO: Load user and set
+                    //github.selectedUser = github.selectedRepo.owner
+                    replaceWith(UserScreen::class, ViewTransition.SlideOut)
+                }
+            }
             label("/").addClass(h1)
-            label("tornadofx").addClass(h1)
+            label() {
+                addClass(h1)
+                textProperty().bind(github.selectedRepoProperty.stringBinding { it!!.name.value })
+            }
         }
     }
 }

@@ -4,12 +4,14 @@ import javafx.beans.property.SimpleLongProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import tornadofx.JsonModel
+import tornadofx.jsonModel
 import tornadofx.long
 import tornadofx.string
 import java.time.ZonedDateTime
 import javax.json.JsonObject
 
 class Repo : JsonModel {
+    val owner = SimpleObjectProperty<User>()
     val name = SimpleStringProperty()
     val description = SimpleStringProperty()
     val forksCount = SimpleLongProperty()
@@ -19,6 +21,7 @@ class Repo : JsonModel {
 
     override fun updateModel(json: JsonObject) {
         with (json) {
+            owner.value = jsonModel("owner")
             name.value = string("name")
             description.value = string("description")
             forksCount.value = long("forks_count")
