@@ -93,6 +93,7 @@ class LoginScreen : View() {
 
                 if (success) {
                     replaceWith(UserScreen::class, ViewTransition.SlideIn)
+//                    replaceWith(RepoScreen::class, ViewTransition.SlideIn)
                 } else {
                     loginFailed()
                 }

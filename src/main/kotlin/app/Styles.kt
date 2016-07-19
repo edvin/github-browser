@@ -22,6 +22,9 @@ class Styles : Stylesheet() {
         val statsbar by cssclass()
         val codeview by cssclass()
         val issuelist by cssclass()
+        val userscreen by cssclass()
+        val userinfo by cssclass()
+        val detail by cssclass()
         val errorMessage by cssclass()
         val loginScreen by cssclass()
         val newToGitHub by cssclass()
@@ -36,11 +39,11 @@ class Styles : Stylesheet() {
 
         // Colors
         val lightBackgroundColor = c("#fafafa")
+        val darkBackgroundColor = c("#f5f5f5")
         val linkColor = c("#4078c0")
         val contrastColor = c("#d26911")
         val borderLineColor = c("#e5e5e5")
         val darkTextColor = c("#666")
-        val listRowBackground = c("#f5f5f5")
 
         // Buttons
         val successButton by cssclass()
@@ -72,9 +75,18 @@ class Styles : Stylesheet() {
         val openIssueIcon by cssclass()
         val crossIcon by cssclass()
         val starIcon by cssclass()
+        val locationIcon by cssclass()
+        val linkIcon by cssclass()
+        val clockIcon by cssclass()
     }
 
     init {
+        root {
+            unsafe("-fx-accent", linkColor)
+            unsafe("-fx-faint-focus-color", raw("transparent"))
+            unsafe("-fx-text-background-color", raw("ladder( -fx-background, -fx-dark-text-color 46%, -fx-dark-text-color 59%, -fx-mid-text-color 60% )"))
+        }
+
         rowWrapper {
             alignment = CENTER
         }
@@ -178,6 +190,36 @@ class Styles : Stylesheet() {
             }
         }
 
+        userscreen {
+            backgroundColor += WHITE
+            userinfo {
+                backgroundColor += WHITE
+                padding = box(20.px, 10.px)
+                minWidth = Dimension(pageWidth.value - 735, Dimension.LinearUnits.px)
+                maxWidth = minWidth
+                stat {
+                    alignment = CENTER
+                    borderColor += box(borderLineColor, TRANSPARENT)
+                }
+                stat child star {
+                    spacing = 2.px
+                    padding = box(10.px)
+                    alignment = CENTER
+                    s(label) {
+                        fontSize = 22.px
+                        fontWeight = BOLD
+                        textFill = linkColor
+                    }
+                    fontSize = 12.px
+                }
+            }
+            detail {
+                backgroundColor += WHITE
+                minWidth = Dimension(pageWidth.value - 245, Dimension.LinearUnits.px)
+                maxWidth = minWidth
+            }
+        }
+
         statsbar {
             borderColor += box(TRANSPARENT, TRANSPARENT, contrastColor, TRANSPARENT)
             borderWidth += box(0.px, 0.px, 8.px, 0.px)
@@ -197,6 +239,7 @@ class Styles : Stylesheet() {
         }
 
         topbar {
+            backgroundColor += darkBackgroundColor
             padding = box(10.px, 0.px)
             content {
                 spacing = 20.px
@@ -223,11 +266,6 @@ class Styles : Stylesheet() {
             textFill = darkTextColor
         }
 
-        h2 {
-            fontSize = 16.px
-            textFill = darkTextColor
-        }
-
         head {
             padding = box(20.px, 0.px)
             spacing = 20.px
@@ -240,10 +278,15 @@ class Styles : Stylesheet() {
 
         s(listView, tableView) {
             s(hover, selected) {
-                backgroundColor += listRowBackground
+                backgroundColor += darkBackgroundColor
             }
             focusColor = TRANSPARENT
             faintFocusColor = TRANSPARENT
+            add(focused) {
+                unsafe("-fx-background-color", raw("-fx-box-border, -fx-control-inner-background"))
+                backgroundInsets = multi(box(0.px), box(1.px))
+                padding = box(1.px)
+            }
         }
 
         listCell and odd {
@@ -318,6 +361,9 @@ class Styles : Stylesheet() {
             and(pressed) {
                 backgroundColor += c("#569e3d")
             }
+            icon {
+                backgroundColor += WHITE
+            }
         }
 
         // Icons
@@ -357,6 +403,9 @@ class Styles : Stylesheet() {
         contributorsIcon { shape = "M16 12.999c0 .439-.45 1-1 1H7.995c-.539 0-.994-.447-.995-.999H1c-.54 0-1-.561-1-1 0-2.634 3-4 3-4s.229-.409 0-1c-.841-.621-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.442.58 2.5 3c.058 2.41-.159 2.379-1 3-.229.59 0 1 0 1s1.549.711 2.42 2.088C9.196 9.369 10 8.999 10 8.999s.229-.409 0-1c-.841-.62-1.058-.59-1-3 .058-2.419 1.367-3 2.5-3s2.437.581 2.495 3c.059 2.41-.158 2.38-1 3-.229.59 0 1 0 1s3.005 1.366 3.005 4" }
         commentIcon { shape = "M14 1H2c-.55 0-1 .45-1 1v8c0 .55.45 1 1 1h2v3.5L7.5 11H14c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zm0 9H7l-2 2v-2H2V2h12v8z" }
         starIcon { shape = "M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74z" }
+        locationIcon { shape = "M6 0C2.69 0 0 2.5 0 5.5 0 10.02 6 16 6 16s6-5.98 6-10.5C12 2.5 9.31 0 6 0zm0 14.55C4.14 12.52 1 8.44 1 5.5 1 3.02 3.25 1 6 1c1.34 0 2.61.48 3.56 1.36.92.86 1.44 1.97 1.44 3.14 0 2.94-3.14 7.02-5 9.05zM8 5.5c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z" }
+        linkIcon { shape = "M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z" }
+        clockIcon { shape = "M8 8h3v2H7c-.55 0-1-.45-1-1V4h2v4zM7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7z" }
         crossIcon {
             shape = "M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"
             cursor = HAND
@@ -369,43 +418,10 @@ class Styles : Stylesheet() {
             backgroundColor += c("#333")
             shape = "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
         }
+
+        s(hyperlink and armed, hyperlink and visited, hyperlink and hover and armed) {
+            unsafe("-fx-text-fill", raw("-fx-accent"))
+        }
+
     }
-
-    // Some rules cannot be expressed in a type safe manner for now, override render to add
-    override fun render() = super.render() + """
-/* Remove different background for odd rows */
-//.list-cell:odd {
-//    -fx-background: -fx-control-inner-background;
-//}
-
-.root {
-    /* Remove one light step to make sure we don't get white text on light color backgrounds */
-    -fx-text-background-color: ladder(
-        -fx-background,
-        -fx-dark-text-color  46%,
-        -fx-dark-text-color  59%,
-        -fx-mid-text-color   60%
-    );
-    /* Remove the focus faint color */
-    -fx-faint-focus-color: transparent;
-}
-
-/* Same border on focus */
-.list-view:focused, .table-view:focused {
-  -fx-background-color: -fx-box-border, -fx-control-inner-background;
-  -fx-background-insets: 0, 1;
-  -fx-padding: 1;
-}
-
-/* Visited hyperlinks look like non-visited hyperlinks */
-.hyperlink:armed,
-.hyperlink:visited,
-.hyperlink:hover:armed {
-    -fx-text-fill: -fx-accent;
-}
-"""
-}
-
-fun main(args: Array<String>) {
-    println(Styles().render())
 }

@@ -1,7 +1,6 @@
 package view
 
 import app.IssueEvent
-import app.Styles
 import app.Styles.Companion.bold
 import app.Styles.Companion.commentIcon
 import app.Styles.Companion.defaultContentPadding

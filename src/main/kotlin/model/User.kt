@@ -9,10 +9,12 @@ import javax.json.JsonObject
 
 class User : JsonModel {
     val login = SimpleStringProperty()
+    val name = SimpleStringProperty()
     val password = SimpleStringProperty()
     val avatarUrl = SimpleStringProperty()
     val location = SimpleStringProperty()
     val email = SimpleStringProperty()
+    val blog = SimpleStringProperty()
     val followers = SimpleLongProperty()
     val following = SimpleLongProperty()
     val created = SimpleObjectProperty<ZonedDateTime>()
@@ -20,12 +22,15 @@ class User : JsonModel {
     override fun updateModel(json: JsonObject) {
         with(json) {
             login.value = string("login")
+            name.value = string("name")
             avatarUrl.value = string("avatar_url")
             location.value = string("location")
             email.value = string("email")
+            blog.value = string("blog")
             followers.value = long("followers")
             following.value = long("following")
-            created.value = ZonedDateTime.parse(getString("created_at"))
+            if (isNotNullOrNULL("created_at"))
+                created.value = ZonedDateTime.parse(getString("created_at"))
         }
     }
 
@@ -41,10 +46,12 @@ class UserModel : ViewModel() {
     }
 
     val login = bind { user.login }
+    val name = bind { user.name }
     val password = bind { user.password }
     val avatarUrl = bind { user.avatarUrl }
     val location = bind { user.location }
     val email = bind { user.email }
+    val blog = bind { user.blog }
     val followers = bind { user.followers }
     val following = bind { user.following }
     val created = bind { user.created }
