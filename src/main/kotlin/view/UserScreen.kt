@@ -88,7 +88,7 @@ class UserDetail : View() {
                             hboxConstraints { hGrow = ALWAYS }
                             text(it.name).addClass(h2, bold).fill = linkColor
                             label(it.description)
-                            label("Updated #${it.updated.value.humanSince}")
+                            label("Updated ${it.updated.value.humanSince}")
                         }
                         hbox {
                             addClass(defaultSpacing)
