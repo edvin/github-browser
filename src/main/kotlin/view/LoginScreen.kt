@@ -64,7 +64,7 @@ class LoginScreen : View() {
             }
             hbox {
                 addClass(newToGitHub)
-                text("New to GitHub?")
+                text("New to GitHub? ")
                 hyperlink("Create an account.") {
                     setOnAction {
                         application.hostServices.showDocument("https://github.com/join?source=login")
@@ -92,7 +92,8 @@ class LoginScreen : View() {
                 opacity = 1.0
 
                 if (success) {
-                    replaceWith(UserScreen::class, ViewTransition.SlideIn)
+//                    replaceWith(UserScreen::class, ViewTransition.SlideIn)
+                    replaceWith(UserScreen::class)
                 } else {
                     loginFailed()
                 }

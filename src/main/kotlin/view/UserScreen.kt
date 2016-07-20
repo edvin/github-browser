@@ -27,7 +27,6 @@ import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority.ALWAYS
-import javafx.scene.layout.VBox
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.paint.Color.TRANSPARENT
 import model.Repo
@@ -36,6 +35,8 @@ import java.time.format.DateTimeFormatter
 
 class UserScreen : View() {
     override val root = BorderPane().addClass(userscreen)
+    val github: GitHub by inject()
+    val user = github.selectedUser
 
     init {
         title = "GitHub Browser User Screen"
@@ -47,130 +48,121 @@ class UserScreen : View() {
 
             center = hbox {
                 addClass(rowWrapper)
-                this += UserInfo::class
-                this += UserDetail::class
+                userInfo()
+                userDetail()
             }
         }
     }
-}
 
-class UserDetail : View() {
-    override val root = VBox().addClass(detail, defaultSpacing, defaultContentPadding)
-    val github: GitHub by inject()
+    fun HBox.userDetail() = vbox {
+        addClass(detail, defaultSpacing, defaultContentPadding)
+        hbox {
+            label("Repositories") {
+                addClass(h2)
+                graphic = label().addClass(repoIcon, icon)
+            }
+            spacer()
+            button("New", Label().addClass(repoIcon, icon)) {
+                addClass(successButton)
+                setOnAction {
 
-    init {
-        with(root) {
-            hbox {
-                label("Repositories") {
-                    addClass(h2)
-                    graphic = label().addClass(repoIcon, icon)
-                }
-                spacer()
-                button("New", Label().addClass(repoIcon, icon)) {
-                    addClass(successButton)
-                    setOnAction {
-
-                    }
                 }
             }
-            listview<Repo> {
-                vboxConstraints { vGrow = ALWAYS }
-                cellFormat {
-                    graphic = HBox().apply {
+        }
+        listview<Repo> {
+            vboxConstraints { vGrow = ALWAYS }
+            cellFormat {
+                graphic = HBox().apply {
+                    addClass(defaultSpacing)
+                    vbox {
                         addClass(defaultSpacing)
-                        vbox {
-                            addClass(defaultSpacing)
-                            hboxConstraints { hGrow = ALWAYS }
-                            hyperlink(it.name) {
-                                setOnAction { editRepo(item) }
-                                addClass(h2, bold)
-                            }
-                            label(it.description)
-                            label("Updated ${it.updated.value.humanSince}")
+                        hboxConstraints { hGrow = ALWAYS }
+                        hyperlink(it.name) {
+                            setOnAction { editRepo(item) }
+                            addClass(h2, bold)
                         }
-                        hbox {
-                            addClass(defaultSpacing)
-                            label().addClass(starIcon, icon)
-                            label(it.stargazersCount.value.toString())
-                            label().addClass(branchIcon, icon)
-                            label(it.forksCount.value.toString())
-                        }
+                        label(it.description)
+                        label("Updated ${it.updated.humanSince}")
+                    }
+                    hbox {
+                        addClass(defaultSpacing)
+                        label().addClass(starIcon, icon)
+                        label(it.stargazersCount.toString())
+                        label().addClass(branchIcon, icon)
+                        label(it.forksCount.toString())
                     }
                 }
-                onUserSelect {
-                    editRepo(it)
-                }
-                whenDocked {
-                    asyncItems { github.listRepos() }
-                }
+            }
+            onUserSelect {
+                editRepo(it)
+            }
+            whenDocked {
+                asyncItems { github.listRepos() }
             }
         }
+
     }
 
-    private fun editRepo(repo: Repo) {
+    fun editRepo(repo: Repo) {
         github.selectedRepo = repo
         replaceWith(RepoScreen::class, ViewTransition.SlideIn)
     }
-}
 
-class UserInfo : View() {
-    override val root = VBox().addClass(userinfo)
-    val user = get(GitHub::selectedUser)
+    fun HBox.userInfo() = vbox {
+        addClass(userinfo)
+        addClass(defaultSpacing)
+        imageview {
+            imageProperty().bind(user.avatarUrlProperty.objectBinding { Image(user.avatarUrl, true) })
+        }
+        vbox {
+            label(user.nameProperty).addClass(h1)
+            label(user.loginProperty).addClass(h2)
+        }
+        hyperlink("Add a bio") {
+            padding = Insets(0.0)
+        }
+        hbox {
+            style {
+                borderColor += box(TRANSPARENT, TRANSPARENT, borderLineColor, TRANSPARENT)
+            }
+        }
+        vbox {
+            padding = Insets(10.0, 0.0, 10.0, 0.0)
+            spacing = 6.0
 
-    init {
-        with(root) {
-            addClass(defaultSpacing)
-            imageview {
-                imageProperty().bind(user.avatarUrlProperty.objectBinding { Image(user.avatarUrl, true) })
+            label(user.locationProperty) {
+                textFill = BLACK
+                graphicTextGap = 10.0
+                graphic = label().addClass(locationIcon, icon)
+            }
+            label(user.blogProperty) {
+                textFill = BLACK
+                graphicTextGap = 10.0
+                graphic = label().addClass(linkIcon, icon)
+            }
+            val joined = user.createdProperty.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" }
+            label(joined) {
+                textFill = BLACK
+                graphicTextGap = 10.0
+                graphic = label().addClass(clockIcon, icon)
+            }
+        }
+        hbox {
+            addClass(stat)
+            vbox {
+                label().textProperty().bind(user.followersProperty.stringBinding { it.toString() })
+                text("Followers") {
+                    fill = darkTextColor
+                }
             }
             vbox {
-                label(user.nameProperty).addClass(h1)
-                label(user.loginProperty).addClass(h2)
-            }
-            hyperlink("Add a bio") {
-                padding = Insets(0.0)
-            }
-            hbox {
-                style {
-                    borderColor += box(TRANSPARENT, TRANSPARENT, borderLineColor, TRANSPARENT)
-                }
-            }
-            vbox {
-                padding = Insets(10.0, 0.0, 10.0, 0.0)
-                spacing = 6.0
-
-                label(user.locationProperty) {
-                    textFill = BLACK
-                    graphicTextGap = 10.0
-                    graphic = label().addClass(locationIcon, icon)
-                }
-                label(user.blogProperty) {
-                    textFill = BLACK
-                    graphicTextGap = 10.0
-                    graphic = label().addClass(linkIcon, icon)
-                }
-                val joined = user.createdProperty.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" }
-                label(joined) {
-                    textFill = BLACK
-                    graphicTextGap = 10.0
-                    graphic = label().addClass(clockIcon, icon)
-                }
-            }
-            hbox {
-                addClass(stat)
-                vbox {
-                    label().textProperty().bind(user.followersProperty.stringBinding { it.toString() })
-                    text("Followers") {
-                        fill = darkTextColor
-                    }
-                }
-                vbox {
-                    label().textProperty().bind(user.followingProperty.stringBinding { it.toString() })
-                    text("Following") {
-                        fill = darkTextColor
-                    }
+                label().textProperty().bind(user.followingProperty.stringBinding { it.toString() })
+                text("Following") {
+                    fill = darkTextColor
                 }
             }
         }
     }
 }
+
+

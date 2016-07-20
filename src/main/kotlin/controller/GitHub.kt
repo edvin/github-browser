@@ -19,7 +19,7 @@ class GitHub : Controller() {
         api.baseURI = "https://api.github.com/"
     }
 
-    fun listIssues(username: String = "edvin", repo: String = "tornadofx", state: Issue.State)
+    fun listIssues(username: String = selectedUser.login, repo: String = selectedRepo.name, state: Issue.State)
             = api.get("repos/$username/$repo/issues?state=$state").list().toModel<Issue>()
 
     fun listRepos(username: String = selectedUser.login)
@@ -31,11 +31,11 @@ class GitHub : Controller() {
     fun login(username: String, password: String): Boolean {
         api.setBasicAuth(username, password)
         val result = api.get("user")
-        val json = result.one()
         if (result.ok()) {
-            selectedUser = json.toModel()
+            selectedUser = result.one().toModel()
             return true
         }
+        result.consume()
         return false
     }
 }

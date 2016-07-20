@@ -5,12 +5,12 @@ import app.Styles.Companion.logoIcon
 import app.Styles.Companion.medium
 import app.Styles.Companion.topbar
 import javafx.scene.layout.HBox
-import tornadofx.View
+import tornadofx.Fragment
 import tornadofx.addClass
 import tornadofx.label
 import tornadofx.textfield
 
-class TopBar : View() {
+class TopBar : Fragment() {
     override val root = HBox()
 
     init {

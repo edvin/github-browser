@@ -1,6 +1,5 @@
 package view
 
-import app.Styles
 import app.Styles.Companion.black
 import app.Styles.Companion.bold
 import app.Styles.Companion.branchIcon
@@ -15,6 +14,7 @@ import app.Styles.Companion.releasesIcon
 import app.Styles.Companion.stat
 import app.Styles.Companion.statsbar
 import app.Styles.Companion.whiteBackground
+import controller.GitHub
 import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
@@ -22,16 +22,17 @@ import tornadofx.*
 
 class CodeView : View() {
     override val root = BorderPane().addClass(codeview)
+    val repo = get(GitHub::selectedRepoProperty)
 
     init {
         with(root) {
             addClass(whiteBackground, defaultContentPadding)
-            top {
+            top = vbox {
                 addClass(defaultSpacing)
                 hbox {
                     addClass(h2)
-                    label("Lightweight JavaFX Framework for Kotlin")
-                    label("-")
+                    label(repo.stringBinding { it!!.description })
+                    label(" - ")
                     hyperlink("Edit")
                 }
                 statsbar()
