@@ -8,6 +8,7 @@ import app.Styles.Companion.head
 import app.Styles.Companion.icon
 import app.Styles.Companion.issuesIcon
 import app.Styles.Companion.lightBackground
+import app.Styles.Companion.linkLook
 import app.Styles.Companion.pullRequestsIcon
 import app.Styles.Companion.repoIcon
 import app.Styles.Companion.rowWrapper
@@ -26,13 +27,13 @@ class RepoScreen : View() {
         title = "TornadoFX GitHub Browser"
 
         with(root) {
-            top {
+            top = vbox {
                 addClass(rowWrapper)
                 this += TopBar::class
                 this += RepoHeading::class
             }
 
-            center {
+            center = vbox {
                 addClass(rowWrapper)
                 this += RepoTabs::class
             }
@@ -43,25 +44,26 @@ class RepoScreen : View() {
 class RepoHeading : View() {
     override val root = VBox().addClass(head)
     val github: GitHub by inject()
+    val repo = github.selectedRepoProperty
+    val repoOwner = repo.stringBinding { it!!.owner.value.login }
 
     init {
         root.contentBox {
             addClass(hContainer)
             label().addClass(icon, repoIcon)
-            hyperlink() {
-                textProperty().bind(github.selectedRepoProperty.stringBinding { it!!.owner.name })
+            hyperlink(repoOwner) {
                 addClass(h1)
                 setOnAction {
-                    // TODO: Load user and set
-                    //github.selectedUser = github.selectedRepo.owner
-                    replaceWith(UserScreen::class, ViewTransition.SlideOut)
+                    runAsync {
+                        val user = github.user(repo.value.owner.value.login)
+                        github.selectedUser = user
+                    } ui {
+                        replaceWith(UserScreen::class, ViewTransition.SlideOut)
+                    }
                 }
             }
-            label("/").addClass(h1)
-            label() {
-                addClass(h1)
-                textProperty().bind(github.selectedRepoProperty.stringBinding { it!!.name.value })
-            }
+            label("/").addClass(h1, linkLook)
+            label(repo.stringBinding { it!!.name.value }).addClass(h1, linkLook)
         }
     }
 }

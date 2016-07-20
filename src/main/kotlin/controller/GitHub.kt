@@ -25,6 +25,9 @@ class GitHub : Controller() {
     fun listRepos(username: String = selectedUser.login)
             = api.get("users/$username/repos").list().toModel<Repo>()
 
+    fun user(username: String = selectedUser.login)
+            = api.get("users/$username").one().toModel<User>()
+
     fun login(username: String, password: String): Boolean {
         api.setBasicAuth(username, password)
         val result = api.get("user")

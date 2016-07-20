@@ -149,11 +149,11 @@ class UserInfo : View() {
                     graphicTextGap = 10.0
                     graphic = label().addClass(linkIcon, icon)
                 }
-                label {
+                val joined = user.createdProperty.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" }
+                label(joined) {
                     textFill = BLACK
                     graphicTextGap = 10.0
                     graphic = label().addClass(clockIcon, icon)
-                    textProperty().bind(user.createdProperty.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" })
                 }
             }
             hbox {
