@@ -57,21 +57,16 @@ class User : JsonModel {
 }
 
 class UserModel : ViewModel() {
-    val userProperty = SimpleObjectProperty(User())
-    var user by userProperty
+    var source = User()
 
-    init {
-        rebindOnChange(userProperty)
-    }
-
-    val login = bind { user.loginProperty }
-    val name = bind { user.nameProperty }
-    val password = bind { user.passwordProperty }
-    val avatarUrl = bind { user.avatarUrlProperty }
-    val location = bind { user.locationProperty }
-    val email = bind { user.emailProperty }
-    val blog = bind { user.blogProperty }
-    val followers = bind { user.followersProperty }
-    val following = bind { user.followingProperty }
-    val created = bind { user.createdProperty }
+    val login = bind { source.loginProperty }
+    val name = bind { source.nameProperty }
+    val password = bind { source.passwordProperty }
+    val avatarUrl = bind { source.avatarUrlProperty }
+    val location = bind { source.locationProperty }
+    val email = bind { source.emailProperty }
+    val blog = bind { source.blogProperty }
+    val followers = bind { source.followersProperty }
+    val following = bind { source.followingProperty }
+    val created = bind { source.createdProperty }
 }

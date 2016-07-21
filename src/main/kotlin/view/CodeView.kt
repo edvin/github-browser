@@ -22,7 +22,7 @@ import tornadofx.*
 
 class CodeView : View() {
     override val root = BorderPane().addClass(codeview)
-    val repo = get(GitHub::selectedRepoProperty)
+    val repo = get(GitHub::selectedRepo)
 
     init {
         with(root) {
@@ -31,7 +31,7 @@ class CodeView : View() {
                 addClass(defaultSpacing)
                 hbox {
                     addClass(h2)
-                    label(repo.stringBinding { it!!.description })
+                    label(repo.description)
                     label(" - ")
                     hyperlink("Edit")
                 }

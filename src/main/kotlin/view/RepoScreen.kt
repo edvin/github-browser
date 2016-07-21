@@ -34,8 +34,7 @@ import tornadofx.*
 class RepoScreen : View() {
     override val root = BorderPane()
     val github: GitHub by inject()
-    val repo = github.selectedRepoProperty
-    val repoOwner = repo.stringBinding { it!!.owner.login }
+    val repo = github.selectedRepo
 
     init {
         title = "TornadoFX GitHub Browser"
@@ -60,14 +59,14 @@ class RepoScreen : View() {
         contentBox {
             addClass(hContainer)
             label().addClass(icon, repoIcon)
-            hyperlink(repoOwner) {
+            hyperlink(repo.ownerLogin) {
                 addClass(h1)
                 setOnAction {
                     replaceWith(UserScreen::class, ViewTransition.SlideOut)
                 }
             }
             label("/").addClass(h1, linkLook)
-            label(repo.stringBinding { it!!.name }).addClass(h1, linkLook)
+            label(repo.name).addClass(h1, linkLook)
         }
     }
 
@@ -83,12 +82,19 @@ class RepoScreen : View() {
                 }
                 tab("Issues") {
                     graphic = Label().addClass(icon, issuesIcon)
+                    content {
+                        this += IssueList::class
+                    }
                     selectedProperty().onChange { tabActivated ->
+                        // Load the issue list when the tab is selected
                         if (tabActivated == true)
                             primaryStage.fireEvent(IssueEvent(IssueEvent.ISSUE_TAB_ACTIVATED))
                     }
-                    content {
-                        this += IssueList::class
+                    whenDocked {
+                        // Make sure the issue list is refreshed if the View is reactivated
+                        // and the Issues tab is already selected
+                        if (isSelected)
+                            primaryStage.fireEvent(IssueEvent(IssueEvent.ISSUE_TAB_ACTIVATED))
                     }
                 }
                 tab("Pull requests") {

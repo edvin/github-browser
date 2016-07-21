@@ -104,7 +104,7 @@ class UserScreen : View() {
     }
 
     fun editRepo(repo: Repo) {
-        github.selectedRepo = repo
+        github.selectRepo(repo)
         replaceWith(RepoScreen::class, ViewTransition.SlideIn)
     }
 
@@ -112,11 +112,11 @@ class UserScreen : View() {
         addClass(userinfo)
         addClass(defaultSpacing)
         imageview {
-            imageProperty().bind(user.avatarUrlProperty.objectBinding { Image(user.avatarUrl, true) })
+            imageProperty().bind(user.avatarUrl.objectBinding { Image(it, true) })
         }
         vbox {
-            label(user.nameProperty).addClass(h1)
-            label(user.loginProperty).addClass(h2)
+            label(user.name).addClass(h1)
+            label(user.login).addClass(h2)
         }
         hyperlink("Add a bio") {
             padding = Insets(0.0)
@@ -130,17 +130,17 @@ class UserScreen : View() {
             padding = Insets(10.0, 0.0, 10.0, 0.0)
             spacing = 6.0
 
-            label(user.locationProperty) {
+            label(user.location) {
                 textFill = BLACK
                 graphicTextGap = 10.0
                 graphic = label().addClass(locationIcon, icon)
             }
-            label(user.blogProperty) {
+            label(user.blog) {
                 textFill = BLACK
                 graphicTextGap = 10.0
                 graphic = label().addClass(linkIcon, icon)
             }
-            val joined = user.createdProperty.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" }
+            val joined = user.created.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" }
             label(joined) {
                 textFill = BLACK
                 graphicTextGap = 10.0
@@ -150,13 +150,13 @@ class UserScreen : View() {
         hbox {
             addClass(stat)
             vbox {
-                label().textProperty().bind(user.followersProperty.stringBinding { it.toString() })
+                label(user.followers)
                 text("Followers") {
                     fill = darkTextColor
                 }
             }
             vbox {
-                label().textProperty().bind(user.followingProperty.stringBinding { it.toString() })
+                label(user.following)
                 text("Following") {
                     fill = darkTextColor
                 }

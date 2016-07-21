@@ -41,3 +41,18 @@ class Repo : JsonModel {
         }
     }
 }
+
+class RepoModel : ViewModel() {
+    var source = Repo()
+
+    val owner = bind { source.ownerProperty }
+    val name = bind { source.nameProperty }
+    val description = bind { source.descriptionProperty }
+    val forksCount = bind { source.forksCountProperty }
+    val stargazersCount = bind { source.stargazersCountProperty }
+    val watchersCount = bind { source.watchersCountProperty }
+    val updated = bind { source.updatedProperty }
+
+    // This StringBinding will always reflect the login name of the user owning the currently selected Repo
+    val ownerLogin = owner.stringBinding { it!!.login }
+}

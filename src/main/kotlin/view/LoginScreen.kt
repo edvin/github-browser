@@ -84,6 +84,7 @@ class LoginScreen : View() {
             val originalText = text
             text = "Signing in..."
             opacity = 0.5
+
             runAsync {
                 github.login(model.login.value, model.password.value)
             } ui { success ->
@@ -91,12 +92,10 @@ class LoginScreen : View() {
                 text = originalText
                 opacity = 1.0
 
-                if (success) {
-//                    replaceWith(UserScreen::class, ViewTransition.SlideIn)
-                    replaceWith(UserScreen::class)
-                } else {
+                if (success)
+                    replaceWith(UserScreen::class, ViewTransition.SlideIn)
+                else
                     loginFailed()
-                }
             }
         }
     }

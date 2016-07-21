@@ -1,17 +1,14 @@
 package controller
 
-import javafx.beans.property.SimpleObjectProperty
-import model.Issue
-import model.Repo
-import model.User
-import tornadofx.*
+import model.*
+import tornadofx.Controller
+import tornadofx.Rest
+import tornadofx.rebind
+import tornadofx.toModel
 
 class GitHub : Controller() {
-    val selectedUserProperty = SimpleObjectProperty<User>()
-    var selectedUser by selectedUserProperty
-
-    val selectedRepoProperty = SimpleObjectProperty<Repo>()
-    var selectedRepo by selectedRepoProperty
+    var selectedUser = UserModel()
+    val selectedRepo = RepoModel()
 
     private val api: Rest by inject()
 
@@ -19,23 +16,28 @@ class GitHub : Controller() {
         api.baseURI = "https://api.github.com/"
     }
 
-    fun listIssues(username: String = selectedUser.login, repo: String = selectedRepo.name, state: Issue.State)
+    fun listIssues(username: String = selectedUser.login.value, repo: String = selectedRepo.name.value, state: Issue.State)
             = api.get("repos/$username/$repo/issues?state=$state").list().toModel<Issue>()
 
-    fun listRepos(username: String = selectedUser.login)
+    fun listRepos(username: String = selectedUser.login.value)
             = api.get("users/$username/repos").list().toModel<Repo>()
-
-    fun user(username: String = selectedUser.login)
-            = api.get("users/$username").one().toModel<User>()
 
     fun login(username: String, password: String): Boolean {
         api.setBasicAuth(username, password)
         val result = api.get("user")
         if (result.ok()) {
-            selectedUser = result.one().toModel()
+            selectUser(result.one().toModel())
             return true
         }
         result.consume()
         return false
+    }
+
+    fun selectRepo(repo: Repo) {
+        selectedRepo.rebind { source = repo}
+    }
+
+    fun selectUser(user: User) {
+        selectedUser.rebind { source = user }
     }
 }
