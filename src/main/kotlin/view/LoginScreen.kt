@@ -14,7 +14,6 @@ import app.Styles.Companion.successButton
 import controller.GitHub
 import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.control.Button
-import javafx.scene.control.Hyperlink
 import javafx.scene.control.PasswordField
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
@@ -34,9 +33,7 @@ class LoginScreen : View() {
         title = "GitHub Browser Login"
 
         with(root) {
-            label() {
-                addClass(logoIcon, icon, large)
-            }
+            label().addClass(logoIcon, icon, large)
             label("Sign in to GitHub").addClass(h1)
             stackpane().setId(messageWrapper)
             form {
@@ -51,7 +48,7 @@ class LoginScreen : View() {
                             setId(passwordField)
                             required(message = "Enter your password")
                         }
-                    }.addForgotPasswordLink()
+                    }.forgotPasswordLink()
                 }
 
                 button("Sign in") {
@@ -102,7 +99,7 @@ class LoginScreen : View() {
 
     /**
      * Locate the messageWrapper by it's CSS id and replace it's content
-     * with a "login failed" error message.
+     * with a "login failed" error message. Then focus the password field.
      */
     private fun loginFailed() {
         root.select<StackPane>(messageWrapper).replaceChildren {
@@ -122,12 +119,12 @@ class LoginScreen : View() {
         root.select<PasswordField>(passwordField).requestFocus()
     }
 
-    fun Field.addForgotPasswordLink() {
+    fun Field.forgotPasswordLink() {
         label.style { minWidth = 170.px }
-        val link = Hyperlink("Forgot password?")
-        link.isFocusTraversable = false
-        link.style { fontSize = 12.px }
-        labelContainer.add(link)
+        labelContainer.hyperlink("Forgot password?") {
+            isFocusTraversable = false
+            style { fontSize = 12.px }
+        }
     }
 
 }

@@ -22,6 +22,7 @@ import app.Styles.Companion.userinfo
 import app.Styles.Companion.userscreen
 import controller.GitHub
 import javafx.geometry.Insets
+import javafx.scene.control.Alert.AlertType.WARNING
 import javafx.scene.control.Label
 import javafx.scene.image.Image
 import javafx.scene.layout.BorderPane
@@ -31,7 +32,6 @@ import javafx.scene.paint.Color.BLACK
 import javafx.scene.paint.Color.TRANSPARENT
 import model.Repo
 import tornadofx.*
-import java.time.format.DateTimeFormatter
 
 class UserScreen : View() {
     override val root = BorderPane().addClass(userscreen)
@@ -40,6 +40,7 @@ class UserScreen : View() {
 
     init {
         title = "GitHub Browser User Screen"
+
         with(root) {
             top = vbox {
                 addClass(rowWrapper)
@@ -65,7 +66,7 @@ class UserScreen : View() {
             button("New", Label().addClass(repoIcon, icon)) {
                 addClass(successButton)
                 setOnAction {
-
+                    alert(WARNING, "Not implemented", "New repo is not implemented in this demo.")
                 }
             }
         }
@@ -140,8 +141,7 @@ class UserScreen : View() {
                 graphicTextGap = 10.0
                 graphic = label().addClass(linkIcon, icon)
             }
-            val joined = user.created.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" }
-            label(joined) {
+            label(user.joined) {
                 textFill = BLACK
                 graphicTextGap = 10.0
                 graphic = label().addClass(clockIcon, icon)

@@ -7,6 +7,7 @@ import app.Styles.Companion.commentIcon
 import app.Styles.Companion.defaultContentPadding
 import app.Styles.Companion.defaultSpacing
 import app.Styles.Companion.h1
+import app.Styles.Companion.h2
 import app.Styles.Companion.hContainer
 import app.Styles.Companion.head
 import app.Styles.Companion.icon
@@ -100,13 +101,13 @@ class RepoScreen : View() {
                 tab("Pull requests") {
                     graphic = Label().addClass(icon, pullRequestsIcon)
                     content {
-
+                        label("Pull requests: Not implemented - submit a PR? :)").addClass(h2, defaultContentPadding)
                     }
                 }
                 tab("Settings") {
                     graphic = Label().addClass(icon, settingsIcon)
                     content {
-
+                        label("Settings: Not implemented - submit a PR? :)").addClass(h2, defaultContentPadding)
                     }
                 }
 
@@ -144,7 +145,7 @@ class IssueList : View() {
                         vbox {
                             addClass(defaultSpacing)
                             hboxConstraints { hGrow = Priority.ALWAYS }
-                            label(it.title).addClass(Styles.h2, Styles.bold)
+                            label(it.title).addClass(h2, Styles.bold)
                             label("#${it.number} opened ${it.created.humanSince} by ${it.user}")
                         }
                         hbox {

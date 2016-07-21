@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import tornadofx.*
 import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import javax.json.JsonObject
 
 class User : JsonModel {
@@ -69,4 +70,6 @@ class UserModel : ViewModel() {
     val followers = bind { source.followersProperty }
     val following = bind { source.followingProperty }
     val created = bind { source.createdProperty }
+
+    val joined = created.stringBinding { "Joined on ${it!!.format(DateTimeFormatter.ISO_LOCAL_DATE)}" }
 }
