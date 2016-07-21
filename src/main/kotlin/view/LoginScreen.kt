@@ -76,18 +76,26 @@ class LoginScreen : View() {
     }
 
     private fun Button.login() {
-        if (model.commit()) {
-            // Temporarily change the text and opacity of the login button
-            val originalText = text
+        // Temporarily change the text and opacity of the login button
+        fun signalSigningIn() {
+            properties["originalText"] = text
             text = "Signing in..."
             opacity = 0.5
+        }
+
+        // Reset the text and opacity
+        fun signalSigningComplete() {
+            text = properties["originalText"] as String
+            opacity = 1.0
+        }
+
+        if (model.commit()) {
+            signalSigningIn()
 
             runAsync {
                 github.login(model.login.value, model.password.value)
             } ui { success ->
-                // Reset the text and opacity
-                text = originalText
-                opacity = 1.0
+                signalSigningComplete()
 
                 if (success)
                     replaceWith(UserScreen::class, ViewTransition.SlideIn)
@@ -95,7 +103,9 @@ class LoginScreen : View() {
                     loginFailed()
             }
         }
+
     }
+
 
     /**
      * Locate the messageWrapper by it's CSS id and replace it's content
