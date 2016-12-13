@@ -25,32 +25,27 @@ import app.Styles.Companion.whiteBackground
 import controller.GitHub
 import javafx.geometry.Pos
 import javafx.scene.control.Label
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
 import model.Issue
+import model.RepoModel
 import tornadofx.*
+import tornadofx.ViewTransition.Direction.LEFT
 
-class RepoScreen : View() {
-    override val root = BorderPane()
-    val github: GitHub by inject()
-    val repo = github.selectedRepo
+class RepoScreen : View("TornadoFX GitHub Browser") {
+    val repo: RepoModel by inject()
 
-    init {
-        title = "TornadoFX GitHub Browser"
+    override val root = borderpane {
+        top = vbox {
+            addClass(rowWrapper)
+            this += TopBar::class
+            repoHeading()
+        }
 
-        with(root) {
-            top = vbox {
-                addClass(rowWrapper)
-                this += TopBar::class
-                repoHeading()
-            }
-
-            center = vbox {
-                addClass(rowWrapper)
-                repoTabs()
-            }
+        center = vbox {
+            addClass(rowWrapper)
+            repoTabs()
         }
     }
 
@@ -63,7 +58,7 @@ class RepoScreen : View() {
             hyperlink(repo.ownerLogin) {
                 addClass(h1)
                 setOnAction {
-                    replaceWith(UserScreen::class, ViewTransition.SlideOut)
+                    replaceWith(UserScreen::class, ViewTransition.Slide(0.3.seconds, LEFT))
                 }
             }
             label("/").addClass(h1, linkLook)
@@ -117,13 +112,11 @@ class RepoScreen : View() {
     }
 }
 
-class IssueList : View() {
+class IssueList : View("Issyes") {
     override val root = VBox().addClass(issuelist)
     val github: GitHub by inject()
 
     init {
-        title = "Issues"
-
         with(root) {
             addClass(whiteBackground, defaultContentPadding)
             hbox {

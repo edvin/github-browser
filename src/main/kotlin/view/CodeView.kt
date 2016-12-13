@@ -14,29 +14,25 @@ import app.Styles.Companion.releasesIcon
 import app.Styles.Companion.stat
 import app.Styles.Companion.statsbar
 import app.Styles.Companion.whiteBackground
-import controller.GitHub
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.Pane
 import javafx.scene.layout.Priority.ALWAYS
+import model.RepoModel
 import tornadofx.*
 
 class CodeView : View() {
-    override val root = BorderPane().addClass(codeview)
-    val repo = get(GitHub::selectedRepo)
+    val repo: RepoModel by inject()
 
-    init {
-        with(root) {
-            addClass(whiteBackground, defaultContentPadding)
-            top = vbox {
-                addClass(defaultSpacing)
-                hbox {
-                    addClass(h2)
-                    label(repo.description)
-                    label(" - ")
-                    hyperlink("Edit")
-                }
-                statsbar()
+    override val root = borderpane {
+        addClass(codeview, whiteBackground, defaultContentPadding)
+        top = vbox {
+            addClass(defaultSpacing)
+            hbox {
+                addClass(h2)
+                label(repo.description)
+                label(" - ")
+                hyperlink("Edit")
             }
+            statsbar()
         }
     }
 

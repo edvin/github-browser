@@ -16,62 +16,59 @@ import javafx.geometry.Orientation.VERTICAL
 import javafx.scene.control.Button
 import javafx.scene.control.PasswordField
 import javafx.scene.layout.StackPane
-import javafx.scene.layout.VBox
 import model.UserModel
 import tornadofx.*
 import tornadofx.FX.Companion.application
+import tornadofx.ViewTransition.Direction.LEFT
 
-class LoginScreen : View() {
-    override val root = VBox().addClass(loginScreen)
+class LoginScreen : View("Sign in to GitHub") {
     val github: GitHub by inject()
-    val model = UserModel()
+    val model: UserModel by inject()
 
     val messageWrapper by cssid()
     val passwordField by cssid()
 
-    init {
-        title = "GitHub Browser Login"
+    override val root = vbox {
+        addClass(loginScreen)
 
-        with(root) {
-            label().addClass(logoIcon, icon, large)
-            label("Sign in to GitHub").addClass(h1)
-            stackpane().setId(messageWrapper)
-            form {
-                fieldset(labelPosition = VERTICAL) {
-                    field("Username or email address") {
-                        textfield(model.login) {
-                            required(message = "Enter your login name")
-                        }
+        label().addClass(logoIcon, icon, large)
+        label(title).addClass(h1)
+        stackpane().setId(messageWrapper)
+        form {
+            fieldset(labelPosition = VERTICAL) {
+                field("Username or email address") {
+                    textfield(model.login) {
+                        required(message = "Enter your login name")
                     }
-                    field("Password") {
-                        passwordfield(model.password) {
-                            setId(passwordField)
-                            required(message = "Enter your password")
-                        }
-                    }.forgotPasswordLink()
                 }
+                field("Password") {
+                    passwordfield(model.password) {
+                        setId(passwordField)
+                        required(message = "Enter your password")
+                    }
+                }.forgotPasswordLink()
+            }
 
-                button("Sign in") {
-                    isDefaultButton = true
-                    addClass(successButton)
-                    setOnAction {
-                        login()
-                    }
+            button("Sign in") {
+                isDefaultButton = true
+                addClass(successButton)
+                setOnAction {
+                    login()
                 }
             }
-            hbox {
-                addClass(newToGitHub)
-                text("New to GitHub? ")
-                hyperlink("Create an account.") {
-                    setOnAction {
-                        application.hostServices.showDocument("https://github.com/join?source=login")
-                    }
+        }
+        hbox {
+            addClass(newToGitHub)
+            text("New to GitHub? ")
+            hyperlink("Create an account.") {
+                setOnAction {
+                    application.hostServices.showDocument("https://github.com/join?source=login")
                 }
             }
-            hbox {
-                addClass(footer)
-                label("TornadoFX Showcase Application")
-            }
+        }
+        hbox {
+            addClass(footer)
+            label("TornadoFX Showcase Application")
         }
     }
 
@@ -98,7 +95,7 @@ class LoginScreen : View() {
                 signalSigningComplete()
 
                 if (success)
-                    replaceWith(UserScreen::class, ViewTransition.SlideIn)
+                    replaceWith(UserScreen::class, ViewTransition.Slide(0.3.seconds, LEFT))
                 else
                     loginFailed()
             }
@@ -136,6 +133,4 @@ class LoginScreen : View() {
             style { fontSize = 12.px }
         }
     }
-
 }
-

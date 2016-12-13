@@ -1,14 +1,16 @@
 package controller
 
-import model.*
+import model.Issue
+import model.Repo
+import model.RepoModel
+import model.UserModel
 import tornadofx.Controller
 import tornadofx.Rest
-import tornadofx.rebind
 import tornadofx.toModel
 
 class GitHub : Controller() {
-    var selectedUser = UserModel()
-    val selectedRepo = RepoModel()
+    private val selectedUser: UserModel by inject()
+    private val selectedRepo: RepoModel by inject()
 
     private val api: Rest by inject()
 
@@ -26,18 +28,11 @@ class GitHub : Controller() {
         api.setBasicAuth(username, password)
         val result = api.get("user")
         if (result.ok()) {
-            selectUser(result.one().toModel())
+            selectedUser.item = result.one().toModel()
             return true
         }
         result.consume()
         return false
     }
 
-    fun selectRepo(repo: Repo) {
-        selectedRepo.rebind { source = repo}
-    }
-
-    fun selectUser(user: User) {
-        selectedUser.rebind { source = user }
-    }
 }

@@ -31,16 +31,18 @@ import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
 import javafx.scene.paint.Color.TRANSPARENT
 import model.Repo
+import model.RepoModel
+import model.UserModel
 import tornadofx.*
+import tornadofx.ViewTransition.Direction.LEFT
 
-class UserScreen : View() {
+class UserScreen : View("GitHub Browser User Screen") {
     override val root = BorderPane().addClass(userscreen)
     val github: GitHub by inject()
-    val user = github.selectedUser
+    val user: UserModel by inject()
+    val selectedRepo: RepoModel by inject()
 
     init {
-        title = "GitHub Browser User Screen"
-
         with(root) {
             top = vbox {
                 addClass(rowWrapper)
@@ -105,8 +107,8 @@ class UserScreen : View() {
     }
 
     fun editRepo(repo: Repo) {
-        github.selectRepo(repo)
-        replaceWith(RepoScreen::class, ViewTransition.SlideIn)
+        selectedRepo.item = repo
+        replaceWith(RepoScreen::class, ViewTransition.Slide(0.3.seconds, LEFT))
     }
 
     fun HBox.userInfo() = vbox {
