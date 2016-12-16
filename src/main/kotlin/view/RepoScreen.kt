@@ -1,6 +1,6 @@
 package view
 
-import app.IssueEvent
+import app.IssueTabActivated
 import app.Styles
 import app.Styles.Companion.codeIcon
 import app.Styles.Companion.commentIcon
@@ -84,13 +84,13 @@ class RepoScreen : View("TornadoFX GitHub Browser") {
                     selectedProperty().onChange { tabActivated ->
                         // Load the issue list when the tab is selected
                         if (tabActivated == true)
-                            primaryStage.fireEvent(IssueEvent(IssueEvent.ISSUE_TAB_ACTIVATED))
+                            fire(IssueTabActivated)
                     }
                     whenDocked {
                         // Make sure the issue list is refreshed if the View is reactivated
                         // and the Issues tab is already selected
                         if (isSelected)
-                            primaryStage.fireEvent(IssueEvent(IssueEvent.ISSUE_TAB_ACTIVATED))
+                            fire(IssueTabActivated)
                     }
                 }
                 tab("Pull requests") {
@@ -149,7 +149,7 @@ class IssueList : View("Issyes") {
                     }
                 }
 
-                primaryStage.addEventFilter(IssueEvent.ISSUE_TAB_ACTIVATED) {
+                subscribe<IssueTabActivated> {
                     runAsyncWithProgress {
                         github.listIssues(state = Issue.State.open)
                     } ui {

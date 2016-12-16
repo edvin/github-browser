@@ -114,7 +114,7 @@ class LoginScreen : View("Sign in to GitHub") {
                 addClass(errorMessage)
                 label("Incorrect username or password.")
                 spacer()
-                button() {
+                button {
                     addClass(crossIcon, icon, small)
                     setOnAction {
                         this@hbox.removeFromParent()

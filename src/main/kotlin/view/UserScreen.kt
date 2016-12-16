@@ -80,11 +80,11 @@ class UserScreen : View("GitHub Browser User Screen") {
                     vbox {
                         addClass(defaultSpacing)
                         hboxConstraints { hGrow = ALWAYS }
-                        hyperlink(it.name) {
+                        hyperlink(it.nameProperty) {
                             setOnAction { editRepo(item) }
                             addClass(h2, bold)
                         }
-                        label(it.description)
+                        label(it.descriptionProperty)
                         label("Updated ${it.updated.humanSince}")
                     }
                     hbox {

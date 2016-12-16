@@ -288,7 +288,7 @@ class Styles : Stylesheet() {
             }
             focusColor = TRANSPARENT
             faintFocusColor = TRANSPARENT
-            add(focused) {
+            and(focused) {
                 unsafe("-fx-background-color", raw("-fx-box-border, -fx-control-inner-background"))
                 backgroundInsets = multi(box(0.px), box(1.px))
                 padding = box(1.px)
@@ -343,7 +343,7 @@ class Styles : Stylesheet() {
                 borderColor += box(c("#bbb"))
                 backgroundColor += c("#f3f3f3")
             }
-            add(hover, pressed) {
+            and(hover, pressed) {
                 thumb {
                     backgroundColor += c("#757575")
                     borderColor += box(c("#757575"))
@@ -379,19 +379,19 @@ class Styles : Stylesheet() {
             minHeight = 16.px
             maxHeight = 16.px
             backgroundColor += GRAY
-            add(small) {
+            and(small) {
                 minWidth = 12.px
                 maxWidth = 12.px
                 minHeight = 12.px
                 maxHeight = 12.px
             }
-            add(medium) {
+            and(medium) {
                 minWidth = 28.px
                 maxWidth = 28.px
                 minHeight = 28.px
                 maxHeight = 28.px
             }
-            add(large) {
+            and(large) {
                 minWidth = 48.px
                 maxWidth = 48.px
                 minHeight = 48.px
