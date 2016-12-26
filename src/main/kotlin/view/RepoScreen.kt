@@ -113,52 +113,51 @@ class RepoScreen : View("TornadoFX GitHub Browser") {
 }
 
 class IssueList : View("Issyes") {
-    override val root = VBox().addClass(issuelist)
     val github: GitHub by inject()
 
-    init {
-        with(root) {
-            addClass(whiteBackground, defaultContentPadding)
-            hbox {
-                alignment = Pos.CENTER_RIGHT
-                addClass(defaultContentPadding)
-                button("New issue") {
-                    addClass(successButton)
+    override val root = vbox {
+        addClass(issuelist)
+        addClass(whiteBackground, defaultContentPadding)
+        hbox {
+            alignment = Pos.CENTER_RIGHT
+            addClass(defaultContentPadding)
+            button("New issue") {
+                addClass(successButton)
+            }
+        }
+        listview<Issue> {
+            cellFormat {
+                graphic = HBox().apply {
+                    addClass(defaultSpacing)
+                    hbox {
+                        label() {
+                            addClass(icon, openIssueIcon)
+                        }
+                    }
+                    vbox {
+                        addClass(defaultSpacing)
+                        hboxConstraints { hGrow = Priority.ALWAYS }
+                        label(it.title).addClass(h2, Styles.bold)
+                        label("#${it.number} opened ${it.created.humanSince} by ${it.user}")
+                    }
+                    hbox {
+                        addClass(defaultSpacing)
+                        label().addClass(icon, commentIcon)
+                        label("${it.comments}")
+                    }
                 }
             }
-            listview<Issue> {
-                cellFormat {
-                    graphic = HBox().apply {
-                        addClass(defaultSpacing)
-                        hbox {
-                            label() {
-                                addClass(icon, openIssueIcon)
-                            }
-                        }
-                        vbox {
-                            addClass(defaultSpacing)
-                            hboxConstraints { hGrow = Priority.ALWAYS }
-                            label(it.title).addClass(h2, Styles.bold)
-                            label("#${it.number} opened ${it.created.humanSince} by ${it.user}")
-                        }
-                        hbox {
-                            addClass(defaultSpacing)
-                            label().addClass(icon, commentIcon)
-                            label("${it.comments}")
-                        }
-                    }
-                }
 
-                subscribe<IssueTabActivated> {
-                    runAsyncWithProgress {
-                        github.listIssues(state = Issue.State.open)
-                    } ui {
-                        items = it
-                    }
+            subscribe<IssueTabActivated> {
+                runAsyncWithProgress {
+                    github.listIssues(state = Issue.State.open)
+                } ui {
+                    items = it
                 }
             }
         }
     }
+
 }
 
 

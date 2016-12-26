@@ -19,7 +19,7 @@
         <dependency>
             <groupId>no.tornado</groupId>
             <artifactId>tornadofx</artifactId>
-            <version>1.5.9-SNAPSHOT</version>
+            <version>1.5.9</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
