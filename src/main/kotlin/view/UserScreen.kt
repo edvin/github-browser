@@ -1,21 +1,15 @@
 package view
 
+import app.Styles
 import app.Styles.Companion.bold
 import app.Styles.Companion.borderLineColor
-import app.Styles.Companion.branchIcon
-import app.Styles.Companion.clockIcon
 import app.Styles.Companion.darkTextColor
 import app.Styles.Companion.defaultContentPadding
 import app.Styles.Companion.defaultSpacing
 import app.Styles.Companion.detail
 import app.Styles.Companion.h1
 import app.Styles.Companion.h2
-import app.Styles.Companion.icon
-import app.Styles.Companion.linkIcon
-import app.Styles.Companion.locationIcon
-import app.Styles.Companion.repoIcon
 import app.Styles.Companion.rowWrapper
-import app.Styles.Companion.starIcon
 import app.Styles.Companion.stat
 import app.Styles.Companion.successButton
 import app.Styles.Companion.userinfo
@@ -25,7 +19,6 @@ import javafx.geometry.Insets
 import javafx.scene.control.Alert.AlertType.WARNING
 import javafx.scene.control.Label
 import javafx.scene.image.Image
-import javafx.scene.layout.BorderPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.Priority.ALWAYS
 import javafx.scene.paint.Color.BLACK
@@ -37,23 +30,21 @@ import tornadofx.*
 import tornadofx.ViewTransition.Direction.LEFT
 
 class UserScreen : View("GitHub Browser User Screen") {
-    override val root = BorderPane().addClass(userscreen)
     val github: GitHub by inject()
     val user: UserModel by inject()
     val selectedRepo: RepoModel by inject()
 
-    init {
-        with(root) {
-            top = vbox {
-                addClass(rowWrapper)
-                this += TopBar::class
-            }
+    override val root = borderpane {
+        addClass(userscreen)
+        top = vbox {
+            addClass(rowWrapper)
+            add(TopBar::class)
+        }
 
-            center = hbox {
-                addClass(rowWrapper)
-                userInfo()
-                userDetail()
-            }
+        center = hbox {
+            addClass(rowWrapper)
+            userInfo()
+            userDetail()
         }
     }
 
@@ -62,10 +53,10 @@ class UserScreen : View("GitHub Browser User Screen") {
         hbox {
             label("Repositories") {
                 addClass(h2)
-                graphic = label().addClass(repoIcon, icon)
+                graphic = label().addClass(Styles.repoIcon, Styles.icon)
             }
             spacer()
-            button("New", Label().addClass(repoIcon, icon)) {
+            button("New", Label().addClass(Styles.repoIcon, Styles.icon)) {
                 addClass(successButton)
                 setOnAction {
                     alert(WARNING, "Not implemented", "New repo is not implemented in this demo.")
@@ -89,9 +80,9 @@ class UserScreen : View("GitHub Browser User Screen") {
                     }
                     hbox {
                         addClass(defaultSpacing)
-                        label().addClass(starIcon, icon)
+                        label().addClass(Styles.starIcon, Styles.icon)
                         label(it.stargazersCount.toString())
-                        label().addClass(branchIcon, icon)
+                        label().addClass(Styles.branchIcon, Styles.icon)
                         label(it.forksCount.toString())
                     }
                 }
@@ -136,17 +127,17 @@ class UserScreen : View("GitHub Browser User Screen") {
             label(user.location) {
                 textFill = BLACK
                 graphicTextGap = 10.0
-                graphic = label().addClass(locationIcon, icon)
+                graphic = label().addClass(Styles.locationIcon, Styles.icon)
             }
             label(user.blog) {
                 textFill = BLACK
                 graphicTextGap = 10.0
-                graphic = label().addClass(linkIcon, icon)
+                graphic = label().addClass(Styles.linkIcon, Styles.icon)
             }
             label(user.joined) {
                 textFill = BLACK
                 graphicTextGap = 10.0
-                graphic = label().addClass(clockIcon, icon)
+                graphic = label().addClass(Styles.clockIcon, Styles.icon)
             }
         }
         hbox {

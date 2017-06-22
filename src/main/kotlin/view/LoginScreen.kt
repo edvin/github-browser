@@ -1,15 +1,11 @@
 package view
 
-import app.Styles.Companion.crossIcon
+import app.Styles
 import app.Styles.Companion.errorMessage
 import app.Styles.Companion.footer
 import app.Styles.Companion.h1
-import app.Styles.Companion.icon
-import app.Styles.Companion.large
 import app.Styles.Companion.loginScreen
-import app.Styles.Companion.logoIcon
 import app.Styles.Companion.newToGitHub
-import app.Styles.Companion.small
 import app.Styles.Companion.successButton
 import controller.GitHub
 import javafx.geometry.Orientation.VERTICAL
@@ -19,7 +15,6 @@ import javafx.scene.layout.StackPane
 import model.UserModel
 import tornadofx.*
 import tornadofx.FX.Companion.application
-import tornadofx.ViewTransition.Direction.LEFT
 
 class LoginScreen : View("Sign in to GitHub") {
     val github: GitHub by inject()
@@ -31,7 +26,7 @@ class LoginScreen : View("Sign in to GitHub") {
     override val root = vbox {
         addClass(loginScreen)
 
-        label().addClass(logoIcon, icon, large)
+        label().addClass(Styles.logoIcon, Styles.icon, Styles.large)
         label(title).addClass(h1)
         stackpane().setId(messageWrapper)
         form {
@@ -52,7 +47,7 @@ class LoginScreen : View("Sign in to GitHub") {
             button("Sign in") {
                 isDefaultButton = true
                 addClass(successButton)
-                setOnAction {
+                action {
                     login()
                 }
             }
@@ -94,10 +89,11 @@ class LoginScreen : View("Sign in to GitHub") {
             } ui { success ->
                 signalSigningComplete()
 
-                if (success)
-                    replaceWith(UserScreen::class, ViewTransition.Slide(0.3.seconds, LEFT))
-                else
+                if (success) {
+                    replaceWith(UserScreen::class, ViewTransition.Slide(0.3.seconds))
+                } else {
                     loginFailed()
+                }
             }
         }
 
@@ -115,8 +111,8 @@ class LoginScreen : View("Sign in to GitHub") {
                 label("Incorrect username or password.")
                 spacer()
                 button {
-                    addClass(crossIcon, icon, small)
-                    setOnAction {
+                    addClass(Styles.crossIcon, Styles.icon, Styles.small)
+                    action {
                         this@hbox.removeFromParent()
                     }
                 }

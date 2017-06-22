@@ -2,24 +2,17 @@ package view
 
 import app.IssueTabActivated
 import app.Styles
-import app.Styles.Companion.codeIcon
-import app.Styles.Companion.commentIcon
 import app.Styles.Companion.defaultContentPadding
 import app.Styles.Companion.defaultSpacing
 import app.Styles.Companion.h1
 import app.Styles.Companion.h2
 import app.Styles.Companion.hContainer
 import app.Styles.Companion.head
-import app.Styles.Companion.icon
 import app.Styles.Companion.issuelist
-import app.Styles.Companion.issuesIcon
 import app.Styles.Companion.lightBackground
 import app.Styles.Companion.linkLook
-import app.Styles.Companion.openIssueIcon
 import app.Styles.Companion.pullRequestsIcon
-import app.Styles.Companion.repoIcon
 import app.Styles.Companion.rowWrapper
-import app.Styles.Companion.settingsIcon
 import app.Styles.Companion.successButton
 import app.Styles.Companion.whiteBackground
 import controller.GitHub
@@ -54,7 +47,7 @@ class RepoScreen : View("TornadoFX GitHub Browser") {
 
         contentBox {
             addClass(hContainer)
-            label().addClass(icon, repoIcon)
+            label().addClass(Styles.icon, Styles.repoIcon)
             hyperlink(repo.ownerLogin) {
                 addClass(h1)
                 setOnAction {
@@ -66,24 +59,20 @@ class RepoScreen : View("TornadoFX GitHub Browser") {
         }
     }
 
-    fun VBox.repoTabs() = stackpane() {
+    fun VBox.repoTabs() = stackpane {
         addClass(lightBackground)
         contentBox {
             tabpane {
                 tab("Code") {
-                    graphic = Label().addClass(icon, codeIcon)
-                    content {
-                        this += CodeView::class
-                    }
+                    graphic = Label().addClass(Styles.icon, Styles.codeIcon)
+                    add(CodeView::class)
                 }
                 tab("Issues") {
-                    graphic = Label().addClass(icon, issuesIcon)
-                    content {
-                        this += IssueList::class
-                    }
+                    graphic = Label().addClass(Styles.icon, Styles.issuesIcon)
+                    add(IssueList::class)
                     selectedProperty().onChange { tabActivated ->
                         // Load the issue list when the tab is selected
-                        if (tabActivated == true)
+                        if (tabActivated)
                             fire(IssueTabActivated)
                     }
                     whenDocked {
@@ -94,16 +83,12 @@ class RepoScreen : View("TornadoFX GitHub Browser") {
                     }
                 }
                 tab("Pull requests") {
-                    graphic = Label().addClass(icon, pullRequestsIcon)
-                    content {
-                        label("Pull requests: Not implemented - submit a PR? :)").addClass(h2, defaultContentPadding)
-                    }
+                    graphic = Label().addClass(Styles.icon, pullRequestsIcon)
+                    label("Pull requests: Not implemented - submit a PR? :)").addClass(h2, defaultContentPadding)
                 }
                 tab("Settings") {
-                    graphic = Label().addClass(icon, settingsIcon)
-                    content {
-                        label("Settings: Not implemented - submit a PR? :)").addClass(h2, defaultContentPadding)
-                    }
+                    graphic = Label().addClass(Styles.icon, Styles.settingsIcon)
+                    label("Settings: Not implemented - submit a PR? :)").addClass(h2, defaultContentPadding)
                 }
 
                 tabs.forEach { it.isClosable = false }
@@ -130,8 +115,8 @@ class IssueList : View("Issyes") {
                 graphic = HBox().apply {
                     addClass(defaultSpacing)
                     hbox {
-                        label() {
-                            addClass(icon, openIssueIcon)
+                        label {
+                            addClass(Styles.icon, Styles.openIssueIcon)
                         }
                     }
                     vbox {
@@ -142,7 +127,7 @@ class IssueList : View("Issyes") {
                     }
                     hbox {
                         addClass(defaultSpacing)
-                        label().addClass(icon, commentIcon)
+                        label().addClass(Styles.icon, Styles.commentIcon)
                         label("${it.comments}")
                     }
                 }
