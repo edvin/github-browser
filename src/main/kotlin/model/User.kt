@@ -58,16 +58,16 @@ class User : JsonModel {
 }
 
 class UserModel : ItemViewModel<User>() {
-    val login = bind { item?.loginProperty }
-    val name = bind { item?.nameProperty }
-    val password = bind { item?.passwordProperty }
-    val avatarUrl = bind { item?.avatarUrlProperty }
-    val location = bind { item?.locationProperty }
-    val email = bind { item?.emailProperty }
-    val blog = bind { item?.blogProperty }
-    val followers = bind { item?.followersProperty }
-    val following = bind { item?.followingProperty }
-    val created = bind { item?.createdProperty }
+    val login = bind(User::loginProperty)
+    val name = bind(User::nameProperty)
+    val password = bind(User::passwordProperty)
+    val avatarUrl = bind(User::avatarUrlProperty)
+    val location = bind(User::locationProperty)
+    val email = bind(User::emailProperty)
+    val blog = bind(User::blogProperty)
+    val followers = bind(User::followersProperty)
+    val following = bind(User::followingProperty)
+    val created = bind(User::createdProperty)
 
     val joined = created.stringBinding { "Joined on ${it?.format(DateTimeFormatter.ISO_LOCAL_DATE)}" }
 }
