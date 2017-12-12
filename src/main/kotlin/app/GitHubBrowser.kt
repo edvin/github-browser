@@ -1,6 +1,5 @@
 package app
 
-import javafx.application.Application
 import javafx.stage.Stage
 import tornadofx.*
 import view.LoginScreen
@@ -13,5 +12,5 @@ class GitHubBrowser : App(LoginScreen::class, Styles::class) {
 }
 
 fun main(args: Array<String>) {
-    Application.launch(GitHubBrowser::class.java, *args)
+    launch<GitHubBrowser>(args)
 }

@@ -12,14 +12,14 @@
     <packaging>jar</packaging>
 
     <properties>
-        <kotlin.version>1.1.2-5</kotlin.version>
+        <kotlin.version>1.2.0</kotlin.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>no.tornado</groupId>
             <artifactId>tornadofx</artifactId>
-            <version>1.7.7</version>
+            <version>1.7.13</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
