@@ -26,13 +26,14 @@ class GitHub : Controller() {
 
     fun login(username: String, password: String): Boolean {
         api.setBasicAuth(username, password)
-        val result = api.get("user")
-        if (result.ok()) {
-            selectedUser.item = result.one().toModel()
-            return true
+
+        api.get("user").use {
+            if (it.ok()) {
+                selectedUser.item = it.one().toModel()
+                return true
+            }
+            return false
         }
-        result.consume()
-        return false
     }
 
 }
